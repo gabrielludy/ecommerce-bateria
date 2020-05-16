@@ -37,7 +37,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
 app.use((req, res, next) => {
-    const error = new Error('NOT FOUND. Página ainda não configurada');
+    const error = new Error('Not Found! Página ainda não configurada.');
     error.status = 404;
     next(error);
 })
