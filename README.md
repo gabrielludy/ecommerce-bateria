@@ -17,6 +17,8 @@ You can access the webapp through this link: https://loja-bateria.herokuapp.com/
 
 ### How to use the API
 Enter the webapp link an use the route /api. Disponible routes:
+- /api/users/login
+- /api/users/signup
 - /api/products
   - /api/products/*:productid*
 - /api/order
