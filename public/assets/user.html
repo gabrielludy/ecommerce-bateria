@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ecommerce Bateria - Pagina de Produto</title>
+        <link rel="stylesheet" type="text/css" href="public/css/style.css"> 
+        <script type="text/javascript" src="public/js/methods.js"></script>
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-M9T3ZMQ');</script>
+        <!-- End Google Tag Manager -->      
+    </head>
+    <body>
+        <h1>User</h1>
+        <div class="nav-bar">
+            <div class="menu-geral">
+                <a>Products</a>
+                <a>Orders</a>
+            </div>
+            <div class="menu-login">
+                <a>Logar</a>
+            </div>
+        </div>
+
+        <div class="login">
+            
+                <label for="form-login-email">Email:</label><br>
+                <input type="email" id="form-login-email" name="form-login-email"><br>
+                <label for="form-login-password">Password:</label><br>
+                <input type="password" id="form-login-password" name="form-login-password">
+                <button id="signup-button-submit" onclick="sendLoginForm()">Login</button>
+            
+
+        </div>
+        <div class="signup">
+            
+                <label for="form-signup-email">Email:</label><br>
+                <input type="email" id="form-signup-email" name="form-signup-email"><br>
+                <label for="form-signup-password">Password:</label><br>
+                <input type="password" id="form-signup-password" name="form-signup-password">
+                <button id="signup-button-submit" onclick="sendSignupForm()">Signup</button>
+            
+        </div>
+    </body>
+</html>
