@@ -34,6 +34,10 @@ function getTokenCookieValue(){
     return undefined;
 }
 
+function userLogout(){
+    document.cookie = "jwtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
 function sendLoginForm(){
     const userEmail = document.querySelector('#form-login-email').value;
     const userPassword = document.querySelector('#form-login-password').value;
@@ -87,7 +91,10 @@ function getOrders(){
             divWithOrders.innerText = JSON.stringify(response);
             document.body.appendChild(divWithOrders)
             alert("Successfully requested all orders");
-        }
+        } 
+        else if(xhr.readyState === 4 && xhr.status === 401) {    //readystate === 4 (done){
+            alert("Login to access all orders");
+        } 
     };
     xhr.send();
 }
@@ -102,8 +109,6 @@ function getProducts(){
             var divWithProducts = document.createElement('p');
             divWithProducts.innerText = JSON.stringify(response);
             document.body.appendChild(divWithProducts);
-
-            await alert("Successfully requested all products");
         }
     };
     xhr.send();
