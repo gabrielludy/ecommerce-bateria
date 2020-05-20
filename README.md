@@ -12,7 +12,18 @@ You can access the webapp through this link: https://loja-bateria.herokuapp.com/
 - **package.json** and **package-lock.json**: (contem os pacotes node.js mas nao sei exatamente. pesquisar para preencher aqui).
 
 ### How to use the webapp
-- Out of Order
+#### Home
+- Home page: https://loja-bateria.herokuapp.com/
+#### Login and Signup
+Your login session expires in 1 hour.
+- Login and Signup page: https://loja-bateria.herokuapp.com/user
+#### Product
+- All products page: https://loja-bateria.herokuapp.com/products
+- Specific product page: out-of-order
+#### Order
+To see all orders you need to login.
+- All orders page: https://loja-bateria.herokuapp.com/orders
+- Specific order page: out-of-order
 
 
 ### How to use the API
