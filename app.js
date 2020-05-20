@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 //app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
 
 //Webapp routes
 app.use('/public', express.static(__dirname + '/public'));  //serving all files in /public staticaly
@@ -47,11 +48,11 @@ app.get('/', function(req, res) {
     console.log('GET in ' + __dirname + '/public/index.html');
     res.status(200).sendFile(__dirname + '/public/index.html');
 });
-app.get('/product', function(req, res) {
-    res.status(200).sendFile(__dirname + '/public/assets/product.html');
+app.get('/products', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/products.html');
 });
-app.get('/order', function(req, res) {
-    res.status(200).sendFile(__dirname + '/public/assets/order.html');
+app.get('/orders', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/orders.html');
 });
 app.get('/user', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/user.html');

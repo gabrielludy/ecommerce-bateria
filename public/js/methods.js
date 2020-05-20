@@ -1,8 +1,7 @@
 function createLoginUserToken(responseWithToken){
-console.log("entrou pra criar cokie");
     try {
-        var textToken = JSON.parse(responseWithToken); console.log(textToken);
-        var token = textToken['token'];                 console.log(token);
+        var textToken = JSON.parse(responseWithToken); 
+        var token = textToken['token'];
     
         var now = new Date();
         var time = now.getTime();
@@ -19,6 +18,22 @@ console.log("entrou pra criar cokie");
     }
 }
 
+function getTokenCookieValue(){
+    var c_name = 'jwtoken'; //cookie name
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return undefined;
+}
+
 function sendLoginForm(){
     const userEmail = document.querySelector('#form-login-email').value;
     const userPassword = document.querySelector('#form-login-password').value;
@@ -31,12 +46,12 @@ function sendLoginForm(){
     var xhr = new window.XMLHttpRequest();
     xhr.open('POST', '/api/users/login', true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = async function () {
         if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
             responseWithToken = xhr.responseText;
-console.log(responseWithToken)
-            createLoginUserToken(responseWithToken);
-            alert("You will be logged by the next 1 hour");
+
+            await createLoginUserToken(responseWithToken);
+            await alert("You will be logged by the next 1 hour");
         }
     };
     xhr.send(JSON.stringify(loginParams));
@@ -56,4 +71,40 @@ function sendSignupForm(){
     xhr.send(JSON.stringify(signUpParams));
 
     alert("Successfull signup");
+}
+
+function getOrders(){
+    var tokenCookieValue = getTokenCookieValue();
+
+    var xhr = new window.XMLHttpRequest();
+    xhr.open('GET', '/api/orders', true);
+    //xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + tokenCookieValue);
+    xhr.onreadystatechange = async function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
+            var response = xhr.responseText;
+            var divWithOrders = document.createElement('p');
+            divWithOrders.innerText = JSON.stringify(response);
+            document.body.appendChild(divWithOrders)
+            alert("Successfully requested all orders");
+        }
+    };
+    xhr.send();
+}
+
+function getProducts(){
+
+    var xhr = new window.XMLHttpRequest();
+    xhr.open('GET', '/api/products', true);
+    xhr.onreadystatechange = async function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
+            var response = xhr.responseText;
+            var divWithProducts = document.createElement('p');
+            divWithProducts.innerText = JSON.stringify(response);
+            document.body.appendChild(divWithProducts);
+
+            await alert("Successfully requested all products");
+        }
+    };
+    xhr.send();
 }

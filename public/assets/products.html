@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Ecommerce Bateria - Pagina de Produto</title>
         <link rel="stylesheet" type="text/css" href="public/css/style.css">
+        <script type="text/javascript" src="public/js/methods.js"></script>
+
 
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -18,13 +20,16 @@
         <h1>Produto</h1>
         <div class="nav-bar">
             <div class="menu-geral">
-                <a>Products</a>
-                <a>Orders</a>
+                <a href='/products'>Products</a>
+                <a href='/orders'>Orders</a>
             </div>
             <div class="menu-login">
-                <a>Logar</a>
+                <a href='/user'>Logar</a>
             </div>
         </div>
-        
+
+        <div id='all-products'>
+            <script>getProducts()</script>
+        </div>
     </body>
 </html>
