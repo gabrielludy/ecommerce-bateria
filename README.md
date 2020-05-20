@@ -19,18 +19,18 @@ Your login session expires in 1 hour.
 - Login and Signup page: https://loja-bateria.herokuapp.com/user
 #### Product
 - All products page: https://loja-bateria.herokuapp.com/products
-- Specific product page: out-of-order
+- Specific product page: work-in-progress
 #### Order
 To see all orders you need to login.
 - All orders page: https://loja-bateria.herokuapp.com/orders
-- Specific order page: out-of-order
+- Specific order page: work-in-progress
 
 
 ### How to use the API
 Enter the webapp link an use the route /api. Disponible routes:
-- /api/users/login
-- /api/users/signup
-- /api/products
-  - /api/products/*:productid*
-- /api/order
-  - /api/order/*:orderid*
+- POST to /api/users/login
+- POST to /api/users/signup
+- GET to /api/products
+  - GET to /api/products/*:productid*
+- GET to /api/order (with Authorization param)
+  - GET to /api/order/*:orderid* (with Authorization param)
