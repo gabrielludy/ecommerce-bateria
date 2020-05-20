@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 //import database models
 const User = require('../models/user');
 
+
 exports.users_signup = (req, res, next) => {
     User.find({email: req.body.email})
         .exec()
