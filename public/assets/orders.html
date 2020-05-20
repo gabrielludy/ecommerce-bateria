@@ -17,7 +17,7 @@
         <!-- End Google Tag Manager -->      
     </head>
     <body>
-        <h1>Produto</h1>
+        <h1>Orders</h1>
         <div class="nav-bar">
             <div class="menu-geral">
                 <a href='/'>Home</a>
@@ -31,7 +31,18 @@
         </div>
 
         <div id='all-orders'>
-            <script>getOrders()</script>
+            <table id='all-orders-table'>
+            </table>
+
+            <script>
+                var all_orders = getOrders();
+                all_orders = JSON.parse(all_orders);
+                let table = document.querySelector("table");
+                let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);
+                generateTableHead(table, data);
+                generateTable(table, all_orders["orders"]);
+            </script>
+
         </div>
     </body>
 </html>

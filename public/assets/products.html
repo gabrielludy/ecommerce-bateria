@@ -31,7 +31,18 @@
         </div>
 
         <div id='all-products'>
-            <script>getProducts()</script>
+            <table id='all-products-table'>
+            </table>
+
+            <script>
+                var all_products = getProducts();
+                all_products = JSON.parse(all_products);
+                let table = document.querySelector("table");
+                let data = Object.keys(all_products["products"][all_products["count"]-1]);
+                generateTableHead(table, data);
+                generateTable(table, all_products["products"]);
+            </script>
+
         </div>
     </body>
 </html>

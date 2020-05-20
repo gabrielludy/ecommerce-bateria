@@ -36,6 +36,7 @@ function getTokenCookieValue(){
 
 function userLogout(){
     document.cookie = "jwtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    location.reload();
 }
 
 function sendLoginForm(){
@@ -77,38 +78,67 @@ function sendSignupForm(){
     alert("Successfull signup");
 }
 
+function generateTableHead(table, data) {
+    let thead = table.createTHead();
+    let row = thead.insertRow();
+    for (let key of data) {
+      let th = document.createElement("th");
+      let text = document.createTextNode(key);
+      th.appendChild(text);
+      row.appendChild(th);
+    }
+  }
+  
+  function generateTable(table, data) {
+    for (let element of data) {
+      let row = table.insertRow();
+      for (key in element) {
+        let cell = row.insertCell();
+        let text = document.createTextNode(element[key]);
+        cell.appendChild(text);
+      }
+    }
+  }
+
 function getOrders(){
+    var response;
     var tokenCookieValue = getTokenCookieValue();
 
     var xhr = new window.XMLHttpRequest();
-    xhr.open('GET', '/api/orders', true);
+    xhr.open('GET', '/api/orders', false);
     //xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.setRequestHeader('Authorization', 'Bearer ' + tokenCookieValue);
-    xhr.onreadystatechange = async function () {
+    xhr.onreadystatechange = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
-            var response = xhr.responseText;
-            var divWithOrders = document.createElement('p');
-            divWithOrders.innerText = JSON.stringify(response);
-            document.body.appendChild(divWithOrders)
-            alert("Successfully requested all orders");
+            response = xhr.responseText;
         } 
         else if(xhr.readyState === 4 && xhr.status === 401) {    //readystate === 4 (done){
             alert("Login to access all orders");
         } 
     };
     xhr.send();
+
+    return response;
 }
 
-function getProducts(){
 
-    var xhr = new window.XMLHttpRequest();
-    xhr.open('GET', '/api/products', true);
-    xhr.onreadystatechange = async function () {
-        if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
-            var response = xhr.responseText;
-            var divWithProducts = document.createElement('p');
-            divWithProducts.innerText = JSON.stringify(response);
-            document.body.appendChild(divWithProducts);
+function getProducts(){
+    var allProductsData = {};
+    
+    getXmlDoc('/api/products', function(responseText){
+        allProductsData = responseText;
+    });
+    
+    return allProductsData;
+}
+
+function getXmlDoc(myurl, cb){
+    var xhr = (window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"));
+
+    xhr.open('GET', myurl, false); ; 
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState == 4 && xhr.status == 200) {    //readystate === 4 (done) 
+            if(typeof cb === 'function') cb(xhr.responseText);
         }
     };
     xhr.send();
