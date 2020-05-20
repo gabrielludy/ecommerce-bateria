@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Ecommerce Bateria - Home</title>
         <link rel="stylesheet" type="text/css" href="public/css/style.css">
+        <script type="text/javascript" src="public/js/methods.js"></script>
 
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -15,18 +16,12 @@
         <!-- End Google Tag Manager -->      
     </head>
     <body>
+       <div id='menu-topo'>
+           <script>loadMenuTopo();</script>
+       </div>
+
         <h1>Home</h1>
-        <div class="nav-bar">
-            <div class="menu-geral">
-                <a href='/'>Home</a>
-                <a href='/products'>Products</a>
-                <a href='/orders'>Orders</a>
-            </div>
-            <div class="menu-login">
-                <a href='/user'>Logar</a>
-                <button onclick="userLogout()">Deslogar</button>
-            </div>
-        </div>
+        
         
     </body>
 </html>

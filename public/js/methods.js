@@ -1,3 +1,31 @@
+function loadFile(fileName){
+    var fileUrl = "";
+    var response;
+    var xhr = (window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"));
+    
+    //pages that can be loaded
+    if(fileName.indexOf('menu.html') == 0){
+        var fileUrl = '/public/assets/menu.html';
+    }
+
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState == 4 && xhr.status == 200) {    //readystate === 4 (done) 
+            response = xhr.responseText;
+        }
+    };
+    xhr.open('GET', fileUrl, false);
+    xhr.send();
+
+    return response;
+}
+
+function loadMenuTopo(){
+    var menu = loadFile('menu.html');
+    var divMenuTopo = document.querySelector('#menu-topo');
+    menu = menu.replace(/(\r\n|\n|\r|\t)/gm, "");  //remove break lines and tabs
+    divMenuTopo.insertAdjacentHTML('afterbegin', menu); 
+}
+
 function createLoginUserToken(responseWithToken){
     try {
         var textToken = JSON.parse(responseWithToken); 

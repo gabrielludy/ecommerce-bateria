@@ -1,3 +1,55 @@
+* {
+    padding: 0; 
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+html {
+    font-size: 16px;
+}
+
 body {
-    background-color: aqua;
+    background-color: rgb(231, 240, 106);
+
+}
+
+#nav-bar{
+    display: flex;
+    background-color: burlywood;
+    flex-wrap: wrap;
+    padding: 3px;
+}
+
+#menu-geral{
+    align-self: flex-start;
+    padding: 3px;
+}
+
+#menu-geral a {
+    padding: 3px;
+    margin: 5px;
+}
+
+#menu-login{
+    align-self: flex-end;
+    position: absolute;
+    right: 3%;    
+    padding: 3px;
+}
+
+#menu-login a {
+    padding: 3px;
+    margin: 5px;
+}
+
+@media only screen and (max-width: 350px) {
+    #nav-bar {
+        display: block;
+    }
+
+    #menu-login{
+        align-self: flex-end;
+        position: static;
+    }
+
 }
