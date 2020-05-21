@@ -108,13 +108,13 @@ function sendSignupForm(){
 }
 
 function generateTableHead(table, data) {
-    let thead = table.createTHead();
-    let row = thead.insertRow();
+    var thead = document.createElement('tr');//let thead = table.createTHead();
+    table.appendChild(thead);//let row = thead.insertRow();
     for (let key of data) {
       let th = document.createElement("th");
       let text = document.createTextNode(key);
       th.appendChild(text);
-      row.appendChild(th);
+      thead.appendChild(th);
     }
   }
   

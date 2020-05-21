@@ -22,7 +22,9 @@
         </div>
 
         <div class="main-content">
-            <h1>Produto</h1>
+            <div class="page-title">
+                <h1>Produto</h1>
+            </div>
             
             <div class='all-products'>
                 <table class='all-products-table'>
@@ -32,8 +34,8 @@
                     var all_products = getProducts();
                     all_products = JSON.parse(all_products);
                     let table = document.querySelector("table");
-                    let data = Object.keys(all_products["products"][all_products["count"]-1]);
-                    generateTableHead(table, data);
+                    let headData = Object.keys(all_products["products"][all_products["count"]-1]);
+                    generateTableHead(table, headData);
                     generateTable(table, all_products["products"]);
                 </script>
 
