@@ -6,48 +6,61 @@
 
 html {
     font-size: 16px;
+    background-color: rgb(231, 240, 106); /*rgb(231, 240, 106)*/
+    font-family: Impact, Charcoal, sans-serif;
+    margin: 0;
 }
 
-body {
-    background-color: rgb(231, 240, 106);
-
+.main-content {
+    margin: 10px;
 }
 
-#nav-bar{
+.nav-bar{
     display: flex;
     background-color: burlywood;
     flex-wrap: wrap;
     padding: 3px;
 }
 
-#menu-geral{
+.nav-bar a:hover {
+    background-color: rgb(240, 225, 93);
+    transition: .5s ease;
+    color: black;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.menu-geral{
     align-self: flex-start;
     padding: 3px;
 }
 
-#menu-geral a {
+.menu-geral a {
     padding: 3px;
     margin: 5px;
 }
 
-#menu-login{
+.menu-login{
     align-self: flex-end;
     position: absolute;
     right: 3%;    
     padding: 3px;
 }
 
-#menu-login a {
+.menu-login a {
     padding: 3px;
     margin: 5px;
 }
 
-@media only screen and (max-width: 350px) {
-    #nav-bar {
+@media only screen and (max-width: 470px) {
+    .nav-bar {
         display: block;
     }
 
-    #menu-login{
+    .menu-login{
         align-self: flex-end;
         position: static;
     }

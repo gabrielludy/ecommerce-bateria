@@ -21,7 +21,7 @@ function loadFile(fileName){
 
 function loadMenuTopo(){
     var menu = loadFile('menu.html');
-    var divMenuTopo = document.querySelector('#menu-topo');
+    var divMenuTopo = document.querySelector('.menu-topo');
     menu = menu.replace(/(\r\n|\n|\r|\t)/gm, "");  //remove break lines and tabs
     divMenuTopo.insertAdjacentHTML('afterbegin', menu); 
 }
@@ -77,17 +77,18 @@ function sendLoginForm(){
     var responseWithToken = "";
 
     var xhr = new window.XMLHttpRequest();
-    xhr.open('POST', '/api/users/login', true);
+    xhr.open('POST', '/api/users/login', false);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    xhr.onreadystatechange = async function () {
+    xhr.onreadystatechange = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
             responseWithToken = xhr.responseText;
 
-            await createLoginUserToken(responseWithToken);
-            await alert("You will be logged by the next 1 hour");
+            createLoginUserToken(responseWithToken);
+            alert("You will be logged by the next 1 hour");
         }
     };
     xhr.send(JSON.stringify(loginParams));
+    location.reload();
 }
 
 function sendSignupForm(){

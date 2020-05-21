@@ -17,25 +17,28 @@
         <!-- End Google Tag Manager -->      
     </head>
     <body>
-        <div id='menu-topo'>
+        <div class='menu-topo'>
             <script>loadMenuTopo();</script>
         </div>
-        
-        <h1>Orders</h1>
 
-        <div id='all-orders'>
-            <table id='all-orders-table'>
-            </table>
+        <div class="main-content">
+            <h1>Orders</h1>
 
-            <script>
-                var all_orders = getOrders();
-                all_orders = JSON.parse(all_orders);
-                let table = document.querySelector("table");
-                let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);
-                generateTableHead(table, data);
-                generateTable(table, all_orders["orders"]);
-            </script>
+            <div class='all-orders'>
+                <table class='all-orders-table'>
+                </table>
 
+                <script>
+                    var all_orders = getOrders();
+                    all_orders = JSON.parse(all_orders);
+                    let table = document.querySelector("table");
+                    let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);
+                    generateTableHead(table, data);
+                    generateTable(table, all_orders["orders"]);
+                </script>
+
+            </div>
         </div>
+
     </body>
 </html>
