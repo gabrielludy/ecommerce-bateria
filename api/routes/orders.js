@@ -20,4 +20,6 @@ router.post('/', checkAuth, OrdersController.orders_create_order);
 
 router.delete('/:orderId', checkAuth, OrdersController.orders_delete_order);
 
+//to delete all, create a route that calls  OrdersController.orders_delete_all
+
 module.exports = router;

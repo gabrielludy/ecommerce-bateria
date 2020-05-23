@@ -21,11 +21,19 @@ exports.users_signup = (req, res, next) => {
                             error: err
                         });
                     } else {
+                        //getting the current timestamp
+                        let date = new Date();
+                        let timestamp = date.getTime();
+
+                        //creating the document for mongodb
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
-                            password: hash
+                            password: hash,
+                            creationTimestamp: timestamp
                         });
+
+                        //savin document in database
                         user.save()
                             .then(result => {
                                 console.log(result);
