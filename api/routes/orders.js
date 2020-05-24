@@ -18,8 +18,10 @@ router.get('/:orderId', checkAuth, OrdersController.orders_get_order);
 
 router.post('/', checkAuth, OrdersController.orders_create_order);
 
+//to delete all, create a route that calls  OrdersController.orders_delete_all
+//router.delete('/delete-all', checkAuth, OrdersController.orders_delete_all);
+
 router.delete('/:orderId', checkAuth, OrdersController.orders_delete_order);
 
-//to delete all, create a route that calls  OrdersController.orders_delete_all
 
 module.exports = router;

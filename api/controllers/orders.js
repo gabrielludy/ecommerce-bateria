@@ -1,5 +1,7 @@
 const Order = require('../models/order.js');
 const Product = require('../models/product.js');
+const User = require('../models/user.js');
+var jwt = require('jsonwebtoken');
 
 //import database models
 const mongoose = require('mongoose');
@@ -17,7 +19,7 @@ exports.orders_delete_all = (req, res, next) => {
 
 exports.orders_get_all = (req, res, next) => {
     Order.find()
-    .select('payment products _id')   //comando para mostrar apenas esses campos 
+    .select('_id products payment totalPrice user')   //comando para mostrar apenas esses campos 
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -27,10 +29,8 @@ exports.orders_get_all = (req, res, next) => {
                     _id: doc._id,
                     products: doc.products,
                     payment: doc.payment,
-                    reques: {
-                        type: 'GET',
-                        url: 'http://localhost:3000/order/' + doc._id 
-                    }
+                    totalPrice: doc.totalPrice,
+                    user: doc.user
                 }
             })
         });
@@ -67,69 +67,104 @@ exports.orders_get_order = (req, res, next) => {
     })
 }
 
-
-exports.orders_create_order = (req, res, next) => {
-    var products = req.body.products; 
+exports.orders_create_order = async (req, res, next) => {
+    var products = req.body.order.products; 
+    var userInformation = {
+        'email': req.userData.email,
+        'userId': req.userData.userId
+    };
     var promises = [];
 
-    //validating Array or transformating json format to array format
-    if(Array.isArray(products) == false){
-        products = Object.values(products); //transforms object in array
-    }
 
-    for (let i = 0; i < products.length; i++) {
-        var productId = products[i]["_id"];
-
+    //verify the ids and remove invalid products
+    Object.keys(products).forEach(function(productId) {
         if (!mongoose.Types.ObjectId.isValid(productId)){
-            products.splice(i,1);   //remove product with invalid id
+            delete products[productId];   //remove product with invalid id
         } 
         else {
-            var p = Product.findById(productId)
+            let p = Product.findById(productId)
                     .then(prod => {
                         if(prod == null){
-                            products.splice(i,1);   //remove product with 'valid id' that isnt registered
-                            return "removed";
+                            delete products[productId];    //remove product with 'valid id' that isnt registered
+                            return "product removed";
                         }
-                        return "product maintened";
+                        
+                        products[productId]["price"] = prod["price"];  //adding price
+                        products[productId]["name"] = prod["name"];  //adding name
+                        return "product maintened and price added";
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
-                        });
+                            error: err
+                        })
                     });
             promises.push(p);
         }
-    }
-    
-    //vinculate products prices
-    
+    });
 
+    
+    try{
+        await Promise.all(promises);
 
-    //save order
-    Promise.all(promises).then(() => {
-        //verify if exists at least 1 product
-        if(products.length <= 0){
-            return res.status(404).json({
-                message: "product not found"
-            }); 
-        }
+        //calculate total price
+        var totalPrice = 0;
+        Object.keys(products).forEach(function(productId) {
+            totalPrice += products[productId]["price"];
+        });
 
         //creating order and saving
         const order = new Order({
             _id: new mongoose.Types.ObjectId(), //string
             products: products,                 //[]
-            payment: req.body.payment           //sting
+            payment: req.body.payment,           //sting
+            totalPrice: totalPrice,
+            user: userInformation
         });
         order.save();
-        
+
         return res.status(200).json({
             message: "order created",
             order: order
         });
-    })
+
+    } catch {
+        err => {
+            return res.status(500).json({
+                error: err
+            })
+        }
+    }
+    // await Promise.all(promises).then(()=>{
+    //     //calculate total price
+    //     var totalPrice = 0;
+    //     Object.keys(products).forEach(function(productId) {
+    //         totalPrice += products[productId]["price"];
+    //     });
+
+    //     //creating order and saving
+    //     const order = new Order({
+    //         _id: new mongoose.Types.ObjectId(), //string
+    //         products: products,                 //[]
+    //         payment: req.body.payment,           //sting
+    //         totalPrice: totalPrice,
+    //         user: userInformation
+    //     });
+    //     order.save();
+
+    //     return res.status(200).json({
+    //         message: "order created",
+    //         order: order
+    //     });
+    // })
+    // .catch(err => {
+    //     return res.status(500).json({
+    //         error: err
+    //     })
+    // });    
+
 }
 
-exports.orders_delete_order = (req, res, next) => {
+exports.orders_delete_order =  (req, res, next) => {
     Order.remove({ _id: req.params.orderId })
     .exec()
     .then(result => {

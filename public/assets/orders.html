@@ -32,7 +32,7 @@
                     var all_orders = getOrders();
                     all_orders = JSON.parse(all_orders);
                     let table = document.querySelector("table");
-                    let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);
+                    let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);    //using last document keys to create the head because the last one is in the newest format
                     generateTableHead(table, data);
                     generateTable(table, all_orders["orders"]);
                 </script>
