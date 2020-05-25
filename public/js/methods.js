@@ -107,6 +107,7 @@ function sendSignupForm(){
     alert("Successfull signup");
 }
 
+
 function generateTableHead(table, data) {
     var thead = document.createElement('tr');//let thead = table.createTHead();
     table.appendChild(thead);//let row = thead.insertRow();
@@ -159,6 +160,72 @@ function getProducts(){
     });
     
     return allProductsData;
+}
+
+function createProductsPage(data){
+    function createProductDiv(prod){
+        let productDiv = document.createElement('div');
+        let prodClassAttribute = document.createAttribute('class');
+        prodClassAttribute.value = "product-div";
+        productDiv.setAttributeNode(prodClassAttribute);
+//debugger;
+        Object.keys(prod).forEach((item)=>{
+            let thisDiv = document.createElement('div');
+            //show image
+            if(item.indexOf("productImage") >= 0){
+                try{
+                    let image = new Image();
+                    image.src = '/' + prod.productImage;
+                    image.height = 100;
+                    image.width = 100;
+                    
+                    thisDiv.appendChild(image);
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show name
+            if(item.indexOf("name") >= 0){
+                try{
+                    let divName = document.createElement('div');
+                    thisDiv.innerHTML = prod.name;
+                    thisDiv.appendChild(divName)
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show price
+            if(item.indexOf("price") >= 0){
+                try{
+                    let divPrice= document.createElement('div');
+                    thisDiv.innerHTML = prod.price;
+                    thisDiv.appendChild(divPrice)
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //setting class name
+            let classAttribute = document.createAttribute('class');
+            classAttribute.value = item;
+            thisDiv.setAttributeNode(classAttribute);
+            
+            //adding node to page
+            productDiv.appendChild(thisDiv);
+        });
+        return productDiv;
+    }
+
+    var products = JSON.parse(data)["products"];
+
+    var productsDiv = document.querySelector('.all-products-table');
+    
+    products.forEach(element => {
+        let node = createProductDiv(element);
+        productsDiv.appendChild(node);
+    });
 }
 
 function getXmlDoc(myurl, cb){

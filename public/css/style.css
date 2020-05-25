@@ -120,3 +120,9 @@ table tr td {
     padding-right: 4px;
     text-align: center;
 }
+
+.product-div {
+    display: flex;
+    padding: 5px;
+    margin: 3px;
+}

@@ -28,8 +28,12 @@
             
             <div class='all-products'>
                 <table class='all-products-table'>
+                    <script>
+                        var all_products = getProducts();
+                        createProductsPage(all_products);
+                    </script>
                 </table>
-
+                <!--
                 <script>
                     var all_products = getProducts();
                     all_products = JSON.parse(all_products);
@@ -38,7 +42,7 @@
                     generateTableHead(table, headData);
                     generateTable(table, all_products["products"]);
                 </script>
-
+                -->
             </div>
         </div>
     </body>
