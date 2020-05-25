@@ -7,6 +7,9 @@
         <link rel="stylesheet" type="text/css" href="public/css/style.css"> 
         <script type="text/javascript" src="public/js/methods.js"></script>
 
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -16,31 +19,66 @@
         <!-- End Google Tag Manager -->      
     </head>
     <body>
-        <div class='menu-topo'>
-            <script>loadMenuTopo();</script>
-        </div>
-
-        <h1>User</h1>
-        <div class="main-content">
-
-            <div class="login">
-                <h2>Login</h2>
-                    <label for="form-login-email">Email:</label><br>
-                    <input type="email" id="form-login-email" name="form-login-email"><br>
-                    <label for="form-login-password">Password:</label><br>
-                    <input type="password" id="form-login-password" name="form-login-password">
-                    <button id="signup-button-submit" onclick="sendLoginForm()">Login</button>
+        <header>
+            <div class='menu-topo nav-wrapper'>
+                <script>loadMenuTopo();</script>
+            </div>
+        </header>
+    
+        <main class="main-content">
+            <div class="conteiner">
+            <div class="row">
+                <h3 class="s12">User</h3>
                 
+                <form class="col s5 l3 hoverable yellow lighten-1"> 
+                    <h5>Login</h5>
+                    <div class="input-field">
+                        <label for="form-login-email" class="text-indigo darken-4">Email:</label>
+                        <input type="email" id="form-login-email" name="form-login-email">
+                    </div>
+                    <div class="input-field" >
+                        <label for="form-login-password" class="text-indigo darken-4">Password:</label>
+                        <input type="password" id="form-login-password" name="form-login-password" required>                        
+                    </div>
+                    <button id="signup-button-submit" class="btn waves-effect indigo accent-4" onclick="sendLoginForm()">Login</button>
+                </form>
+                <div class="col s2 l1"></div>
+                <form class="col s5 l3 hoverable yellow lighten-1"> 
+                    <h5>Signup</h5>
+                    <div class="input-field">
+                        <label for="form-signup-email" class="text-indigo darken-4">Email:</label>
+                        <input type="email" id="form-signup-email" name="form-signup-email" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="form-signup-password" class="text-indigo darken-4">Password:</label>
+                        <input type="password" id="form-signup-password" name="form-signup-password" required>
+                    </div>
+                    <button id="signup-button-submit" class="btn waves-effect indigo accent-4" onclick="sendSignupForm()">Signup</button>
+                </form>
+                
+            </div>   
+            </div>
+        </main>
 
+        <footer class="page-footer indigo accent-3">
+            <div class="conteiner">
+                <div class="row">
+                    <div class="col s6">
+                        Feito por Gabriel Souto © 2020
+                    </div>
+                    <div class="col s6">
+                        <h6>Links feras:</h6>
+                        <ul>
+                            <li>Linkedin</li>
+                            <li>Github</li>
+                            <li>gabrielluizferraz@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="signup">
-                <h2>Signup</h2>
-                <label for="form-signup-email">Email:</label><br>
-                <input type="email" id="form-signup-email" name="form-signup-email"><br>
-                <label for="form-signup-password">Password:</label><br>
-                <input type="password" id="form-signup-password" name="form-signup-password">
-                <button id="signup-button-submit" onclick="sendSignupForm()">Signup</button>
-            </div>
-        </div>
+        </footer>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </body>
 </html>

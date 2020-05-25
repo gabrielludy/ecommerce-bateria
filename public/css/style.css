@@ -10,6 +10,21 @@ html {
     font-family: Impact, Charcoal, sans-serif;
     margin: 0;
     color: #25004D;
+    min-width: 350px;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+button {
+    margin-bottom: 5px;
 }
 
 .main-content {
@@ -22,6 +37,7 @@ html {
     flex-wrap: wrap;
     padding: 3px;
     font-weight: bold;
+    min-width: 350px;
 }
 
 .nav-bar a {
