@@ -10,7 +10,7 @@ html {
     font-family: Impact, Charcoal, sans-serif;
     margin: 0;
     color: #25004D;
-    min-width: 350px;
+    min-width: 300px;
 }
 
 body {
@@ -74,7 +74,7 @@ button {
     margin: 5px;
 }
 
-@media only screen and (max-width: 470px) {
+@media only screen and (max-width: 495px) {
 
     .menu-geral{
         display: block;
@@ -116,7 +116,7 @@ button {
     }
 
 }
-
+/*
 table {
     border: 1px solid black;
     border-collapse: separate;
@@ -141,4 +141,8 @@ table tr td {
     display: flex;
     padding: 5px;
     margin: 3px;
+}
+*/
+form {
+    margin-bottom: 15px;
 }

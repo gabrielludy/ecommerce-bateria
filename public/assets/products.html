@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Ecommerce Bateria - Pagina de Produto</title>
         <link rel="stylesheet" type="text/css" href="public/css/style.css">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <script type="text/javascript" src="public/js/methods.js"></script>
 
 
@@ -21,29 +23,34 @@
             <script>loadMenuTopo();</script>
         </div>
 
-        <div class="main-content">
-            <div class="page-title">
+        <div class="row main-content">
+            <div class="page-title s12">
                 <h1>Produto</h1>
             </div>
             
-            <div class='all-products'>
-                <table class='all-products-table'>
+            <div class="l2"></div>
+            <div class='all-products l8'>
+                <table class='all-products-table highlight'>
+                    <thead class="yellow">
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Request</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
                     <script>
                         var all_products = getProducts();
                         createProductsPage(all_products);
                     </script>
                 </table>
-                <!--
-                <script>
-                    var all_products = getProducts();
-                    all_products = JSON.parse(all_products);
-                    let table = document.querySelector("table");
-                    let headData = Object.keys(all_products["products"][all_products["count"]-1]);
-                    generateTableHead(table, headData);
-                    generateTable(table, all_products["products"]);
-                </script>
-                -->
             </div>
+            <div class="l2"></div>
         </div>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </body>
 </html>

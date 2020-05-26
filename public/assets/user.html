@@ -27,36 +27,36 @@
     
         <main class="main-content">
             <div class="conteiner">
-            <div class="row">
-                <h3 class="s12">User</h3>
-                
-                <form class="col s5 l3 hoverable yellow lighten-1"> 
-                    <h5>Login</h5>
-                    <div class="input-field">
-                        <label for="form-login-email" class="text-indigo darken-4">Email:</label>
-                        <input type="email" id="form-login-email" name="form-login-email">
-                    </div>
-                    <div class="input-field" >
-                        <label for="form-login-password" class="text-indigo darken-4">Password:</label>
-                        <input type="password" id="form-login-password" name="form-login-password" required>                        
-                    </div>
-                    <button id="signup-button-submit" class="btn waves-effect indigo accent-4" onclick="sendLoginForm()">Login</button>
-                </form>
-                <div class="col s2 l1"></div>
-                <form class="col s5 l3 hoverable yellow lighten-1"> 
-                    <h5>Signup</h5>
-                    <div class="input-field">
-                        <label for="form-signup-email" class="text-indigo darken-4">Email:</label>
-                        <input type="email" id="form-signup-email" name="form-signup-email" required>
-                    </div>
-                    <div class="input-field">
-                        <label for="form-signup-password" class="text-indigo darken-4">Password:</label>
-                        <input type="password" id="form-signup-password" name="form-signup-password" required>
-                    </div>
-                    <button id="signup-button-submit" class="btn waves-effect indigo accent-4" onclick="sendSignupForm()">Signup</button>
-                </form>
-                
-            </div>   
+                <div class="row">
+                    <h3 class="s12">User</h3>
+                    
+                    <form class="col s12 m5 l3 hoverable yellow lighten-1" method="dialog"> 
+                        <h5>Login</h5>
+                        <div class="input-field">
+                            <label for="form-login-email" class="text-indigo darken-4">Email</label>
+                            <input type="email" id="form-login-email" name="form-login-email">
+                        </div>
+                        <div class="input-field" >
+                            <label for="form-login-password" class="text-indigo darken-4">Password</label>
+                            <input type="password" id="form-login-password" name="form-login-password" required>                        
+                        </div>
+                        <button id="login-button-submit" class="btn waves-effect indigo accent-4" onclick="sendLoginForm()">Login</button>
+                    </form>
+                    <div class="col m2 l1"></div>
+                    <form class="col s12 m5 l3 hoverable yellow lighten-1" method="dialog"> 
+                        <h5>Signup</h5>
+                        <div class="input-field">
+                            <label for="form-signup-email" class="text-indigo darken-4">Email</label>
+                            <input type="email" id="form-signup-email" name="form-signup-email" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="form-signup-password" class="text-indigo darken-4">Password</label>
+                            <input type="password" id="form-signup-password" name="form-signup-password" required>
+                        </div>
+                        <button id="signup-button-submit" class="btn waves-effect indigo accent-4" onclick="sendSignupForm()">Signup</button>
+                    </form>
+                    
+                </div>   
             </div>
         </main>
 

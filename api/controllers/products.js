@@ -6,7 +6,7 @@ const Product = require('../models/product.js');
 
 exports.products_get_all = (req, res, next) => {
     Product.find()
-    .select('name price _id productImage')   //comando para mostrar apenas esses campos 
+    .select('_id name price productImage')   //comando para mostrar apenas esses campos 
     .exec()
     .then(docs => {
         const response = {
@@ -36,10 +36,9 @@ exports.products_get_all = (req, res, next) => {
 exports.products_get_product = (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-        .select('name price _id productImage')
+        .select('_id name price productImage')
         .exec()
         .then(doc => {
-            console.log('from database ' + doc);
             if (doc){
                 res.status(200).json(doc);
             } else {

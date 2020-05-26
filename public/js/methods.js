@@ -163,16 +163,28 @@ function getProducts(){
 }
 
 function createProductsPage(data){
+    //generate table body
     function createProductDiv(prod){
-        let productDiv = document.createElement('div');
-        let prodClassAttribute = document.createAttribute('class');
-        prodClassAttribute.value = "product-div";
-        productDiv.setAttributeNode(prodClassAttribute);
-//debugger;
+        
+        let productDiv = document.createElement('tr');
+        productDiv.setAttribute('class', "product-div");
+        let thisDiv;
+
         Object.keys(prod).forEach((item)=>{
-            let thisDiv = document.createElement('div');
+            thisDiv = document.createElement('td');
+
+            //show _id
+            if(item.indexOf("_id") >= 0){
+                try{
+                    thisDiv.innerHTML = prod["_id"];
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
             //show image
             if(item.indexOf("productImage") >= 0){
+                
                 try{
                     let image = new Image();
                     image.src = '/' + prod.productImage;
@@ -188,9 +200,8 @@ function createProductsPage(data){
             //show name
             if(item.indexOf("name") >= 0){
                 try{
-                    let divName = document.createElement('div');
                     thisDiv.innerHTML = prod.name;
-                    thisDiv.appendChild(divName)
+                    //thisDiv.appendChild(divName)
                 } catch {
                     err => {console.log(err)}
                 };
@@ -199,18 +210,15 @@ function createProductsPage(data){
             //show price
             if(item.indexOf("price") >= 0){
                 try{
-                    let divPrice= document.createElement('div');
                     thisDiv.innerHTML = prod.price;
-                    thisDiv.appendChild(divPrice)
+                    //thisDiv.appendChild(divPrice)
                 } catch {
                     err => {console.log(err)}
                 };
             }
 
             //setting class name
-            let classAttribute = document.createAttribute('class');
-            classAttribute.value = item;
-            thisDiv.setAttributeNode(classAttribute);
+            thisDiv.setAttribute('class', item);
             
             //adding node to page
             productDiv.appendChild(thisDiv);
@@ -220,13 +228,94 @@ function createProductsPage(data){
 
     var products = JSON.parse(data)["products"];
 
-    var productsDiv = document.querySelector('.all-products-table');
+    var productsDiv = document.querySelector('.all-products-table > tbody');
     
     products.forEach(element => {
         let node = createProductDiv(element);
         productsDiv.appendChild(node);
     });
 }
+
+function createOrdersPage(data){
+    //generate table body
+    function createOrderDiv(ord){
+
+        let orderDiv = document.createElement('tr');
+        orderDiv.setAttribute('class', "order-div");
+        let thisDiv;
+
+        Object.keys(ord).forEach((item)=>{
+            thisDiv = document.createElement('td');
+
+            //show _id
+            if(item.indexOf("_id") >= 0){
+                try{
+                    thisDiv.innerHTML = ord["_id"];
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show products
+            if(item.indexOf("products") >= 0){
+                let prods = ord["products"][0];
+                let productsIds = Object.keys(prods);
+
+                try{
+                    productsIds.forEach(id => {
+                        let str = "<br>" + prods[id]["name"]
+                        thisDiv.innerHTML +=  str;
+                    });
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show payment
+            if(item.indexOf("payment") >= 0){
+                try{
+                    thisDiv.innerHTML = ord.payment;
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show price
+            if(item.indexOf("totalPrice") >= 0){
+                try{
+                    thisDiv.innerHTML = ord.totalPrice;
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show user
+            if(item.indexOf("user") >= 0){
+                try{
+                    thisDiv.innerHTML = ord.user["email"];
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //setting class name
+            thisDiv.setAttribute('class', item);
+            
+            //adding node to page
+            orderDiv.appendChild(thisDiv);
+        });
+        return orderDiv;
+    }
+
+    var orders = JSON.parse(data)["orders"];
+    var ordersDiv = document.querySelector('.all-orders-table > tbody');
+    
+    orders.forEach(element => {
+        let node = createOrderDiv(element);
+        ordersDiv.appendChild(node);
+    });
+}
+
 
 function getXmlDoc(myurl, cb){
     var xhr = (window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"));
