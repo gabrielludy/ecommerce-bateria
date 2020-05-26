@@ -8,6 +8,11 @@ function loadFile(fileName){
         var fileUrl = '/public/assets/menu.html';
     }
 
+    //pages that can be loaded
+    if(fileName.indexOf('footer.html') == 0){
+        var fileUrl = '/public/assets/footer.html';
+    }
+
     xhr.onreadystatechange = function () {
         if(xhr.readyState == 4 && xhr.status == 200) {    //readystate === 4 (done) 
             response = xhr.responseText;
@@ -25,6 +30,14 @@ function loadMenuTopo(){
     menu = menu.replace(/(\r\n|\n|\r|\t)/gm, "");  //remove break lines and tabs
     divMenuTopo.insertAdjacentHTML('afterbegin', menu); 
 }
+
+function loadFooter(){
+    var footer = loadFile('footer.html');
+    var divFooter = document.querySelector('.page-footer');
+    footer = footer.replace(/(\r\n|\n|\r|\t)/gm, "");  //remove break lines and tabs
+    divFooter.insertAdjacentHTML('afterbegin', footer); 
+}
+
 
 function createLoginUserToken(responseWithToken){
     try {
