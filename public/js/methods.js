@@ -232,6 +232,7 @@ function createProductsPage(data){
                 try{
                     var nameLink = document.createElement('a');
                     nameLink.setAttribute('href',prod.link);
+                    nameLink.setAttribute('onclick','pushDatalayerProductClick()');
                     nameLink.innerHTML = prod.name;
 
                     thisDiv.appendChild(nameLink);
@@ -359,4 +360,13 @@ function getXmlDoc(myurl, cb){
         }
     };
     xhr.send();
+}
+
+function pushDatalayerPurchase(){
+    var datalayer = window.dataLayer || [];
+
+    datalayer.push({
+        event: 'click-purchase',
+        productInfo: productInfo
+    });
 }
