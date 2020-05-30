@@ -29,6 +29,7 @@ button {
 
 .main-content {
     margin: 10px;
+    min-height: 400px;
 }
 
 .nav-bar{
@@ -145,4 +146,8 @@ table tr td {
 */
 form {
     margin-bottom: 15px;
+}
+
+footer {
+    bottom: 0;
 }

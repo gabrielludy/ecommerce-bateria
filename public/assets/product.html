@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ecommerce Bateria - Home</title>
+        <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+        <script type="text/javascript" src="../public/js/methods.js"></script>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-M9T3ZMQ');</script>
+        <!-- End Google Tag Manager -->     
+        
+    </head>
+    <body>
+        <div class='menu-topo'>
+            <script>loadMenuTopo();</script>
+        </div>
+
+        <script>
+            try{
+                var windowsPaths = window.location.pathname.split('/');
+                var productID = windowsPaths[windowsPaths.length-1];
+                var productInfo = getProduct(productID);
+                productInfo = JSON.parse(productInfo);
+            } catch{}
+        </script>
+
+        <div class="main-content">
+            <div class="page-title">
+                <h1>Product Page</h1>
+            </div>
+            <div class="product-content">
+                <div class="row card blue accent-1" style="padding:10px">
+                    <div class="col s12 l8">
+                        <div class="col s12 l6 product-page-image">
+                            <script>
+                                (function(){
+                                    try{
+                                        let image = new Image();
+                                        image.src = '/' + productInfo.productImage;
+                                        image.height = 300;
+                                        image.width = 250;
+                                        
+                                        document.querySelector('.product-page-image').appendChild(image);
+                                    }catch{console.log('error loading product image')}
+                                })();
+                            </script>
+                        </div>
+                        <div class="col s12 l6">
+                            <div class="col s12 l12 product-page-id">
+                                <p></p>
+                                <script>
+                                    try{
+                                        document.querySelector('.product-page-id > p').innerHTML = "id: "+productInfo._id;
+                                    } catch {console.log('cant load product id')}
+                                </script>
+                            </div>
+                            <div class="col s12 l12 product-page-name">
+                                <h3></h3>
+                                <script>
+                                    try{
+                                        document.querySelector('.product-page-name > h3').innerHTML = productInfo.name;
+                                    } catch {console.log('cant load product name')}
+                                </script>
+                            </div>
+                            <div class="col s12 l12 product-page-price">
+                                <h4></h4>
+                                <script>
+                                    try{
+                                        document.querySelector('.product-page-price > h4').innerHTML = productInfo.price.toFixed(2);
+                                    } catch {console.log('cant load product price')}
+                                </script>
+                            </div>
+                            <div class="col s12 l12 product-page-price">
+                                <a class="waves-effect blue btn">Comprar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="page-footer indigo accent-3">
+            <script>loadFooter();</script>
+        </footer>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+</html>

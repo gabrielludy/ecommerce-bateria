@@ -17,10 +17,7 @@ exports.products_get_all = (req, res, next) => {
                     price: doc.price,
                     _id: doc._id,
                     productImage: doc.productImage,
-                    request: {
-                        type: 'GET',
-                        url: 'http://localhost:3000/products/' + doc._id
-                    }
+                    link: 'https://loja-bateria.herokuapp.com/products/' + doc._id
                 }
             })
         };

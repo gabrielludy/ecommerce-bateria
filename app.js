@@ -48,6 +48,10 @@ app.get('/', function(req, res) {
     console.log('GET in ' + __dirname + '/public/index.html');
     res.status(200).sendFile(__dirname + '/public/index.html');
 });
+app.get('/products/:productId', function(req, res) {
+    //var dirName = __dirname.replace('products/','');
+    res.status(200).sendFile(__dirname + '/public/assets/product.html');
+});
 app.get('/products', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/products.html');
 });

@@ -134,34 +134,6 @@ exports.orders_create_order = async (req, res, next) => {
             })
         }
     }
-    // await Promise.all(promises).then(()=>{
-    //     //calculate total price
-    //     var totalPrice = 0;
-    //     Object.keys(products).forEach(function(productId) {
-    //         totalPrice += products[productId]["price"];
-    //     });
-
-    //     //creating order and saving
-    //     const order = new Order({
-    //         _id: new mongoose.Types.ObjectId(), //string
-    //         products: products,                 //[]
-    //         payment: req.body.payment,           //sting
-    //         totalPrice: totalPrice,
-    //         user: userInformation
-    //     });
-    //     order.save();
-
-    //     return res.status(200).json({
-    //         message: "order created",
-    //         order: order
-    //     });
-    // })
-    // .catch(err => {
-    //     return res.status(500).json({
-    //         error: err
-    //     })
-    // });    
-
 }
 
 exports.orders_delete_order =  (req, res, next) => {
@@ -172,7 +144,7 @@ exports.orders_delete_order =  (req, res, next) => {
             message: 'order deleted',
             request: {
                 type: 'POST',
-                url: 'http://localhost:3000/orders/',
+                url: '/orders/',
                 body: {
                     productId: 'ID',
                     quantity: 'Number'

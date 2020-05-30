@@ -175,6 +175,16 @@ function getProducts(){
     return allProductsData;
 }
 
+function getProduct(productID){
+    var productData = {};
+    
+    getXmlDoc('/api/products/' + productID, function(responseText){
+        productData = responseText;
+    });
+    
+    return productData;
+}
+
 function createProductsPage(data){
     //generate table body
     function createProductDiv(prod){
@@ -214,7 +224,6 @@ function createProductsPage(data){
             if(item.indexOf("name") >= 0){
                 try{
                     thisDiv.innerHTML = prod.name;
-                    //thisDiv.appendChild(divName)
                 } catch {
                     err => {console.log(err)}
                 };
@@ -224,7 +233,19 @@ function createProductsPage(data){
             if(item.indexOf("price") >= 0){
                 try{
                     thisDiv.innerHTML = prod.price;
-                    //thisDiv.appendChild(divPrice)
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show link
+            if(item.indexOf("link") >= 0){
+                try{
+                    var link = document.createElement('a');
+                    link.setAttribute('href', prod.link)
+                    link.innerHTML = "Acessar";
+
+                    thisDiv.appendChild(link);
                 } catch {
                     err => {console.log(err)}
                 };
