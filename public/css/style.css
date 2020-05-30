@@ -151,3 +151,10 @@ form {
 footer {
     bottom: 0;
 }
+
+
+@media only screen and (min-width: 1000px) {
+    .carousel {
+        min-height: 1000px !important;
+    }   
+}
