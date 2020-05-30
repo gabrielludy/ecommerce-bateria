@@ -204,16 +204,9 @@ function createProductsPage(data){
         let thisDiv;
 
         Object.keys(prod).forEach((item)=>{
-            thisDiv = document.createElement('td');
+            if(item.indexOf('_id') >=0) return;     //dont show id
 
-            //show _id
-            if(item.indexOf("_id") >= 0){
-                try{
-                    thisDiv.innerHTML = prod["_id"];
-                } catch {
-                    err => {console.log(err)}
-                };
-            }
+            thisDiv = document.createElement('td');
 
             //show image
             if(item.indexOf("productImage") >= 0){
