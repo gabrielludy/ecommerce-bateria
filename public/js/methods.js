@@ -89,6 +89,9 @@ function sendLoginForm(){
     }
     var responseWithToken = "";
 
+    var instance = M.Modal.init(document.querySelector('#modal-logged'));   //use modal
+
+
     var xhr = new window.XMLHttpRequest();
     xhr.open('POST', '/api/users/login', false);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -97,11 +100,18 @@ function sendLoginForm(){
             responseWithToken = xhr.responseText;
 
             createLoginUserToken(responseWithToken);
-            alert("You will be logged by the next 1 hour");
+
+            instance.options.onCloseEnd = function(){
+                location.reload();
+            };
+            instance.open();
+        }
+        if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
+            console.log('cant open modal');
+            location.reload();
         }
     };
     xhr.send(JSON.stringify(loginParams));
-    location.reload();
 }
 
 function sendSignupForm(){
@@ -209,21 +219,29 @@ function createProductsPage(data){
             if(item.indexOf("productImage") >= 0){
                 
                 try{
+                    var imageLink = document.createElement('a');
+                    imageLink.setAttribute('href', prod.link);
+
                     let image = new Image();
                     image.src = '/' + prod.productImage;
                     image.height = 100;
                     image.width = 100;
-                    
-                    thisDiv.appendChild(image);
+
+                    imageLink.appendChild(image);
+                    thisDiv.appendChild(imageLink);
                 } catch {
                     err => {console.log(err)}
                 };
             }
 
-            //show name
+            //show name (with link)
             if(item.indexOf("name") >= 0){
                 try{
-                    thisDiv.innerHTML = prod.name;
+                    var nameLink = document.createElement('a');
+                    nameLink.setAttribute('href',prod.link);
+                    nameLink.innerHTML = prod.name;
+
+                    thisDiv.appendChild(nameLink);
                 } catch {
                     err => {console.log(err)}
                 };
@@ -233,19 +251,6 @@ function createProductsPage(data){
             if(item.indexOf("price") >= 0){
                 try{
                     thisDiv.innerHTML = prod.price;
-                } catch {
-                    err => {console.log(err)}
-                };
-            }
-
-            //show link
-            if(item.indexOf("link") >= 0){
-                try{
-                    var link = document.createElement('a');
-                    link.setAttribute('href', prod.link)
-                    link.innerHTML = "Acessar";
-
-                    thisDiv.appendChild(link);
                 } catch {
                     err => {console.log(err)}
                 };

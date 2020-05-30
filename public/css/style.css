@@ -23,8 +23,8 @@ main {
     flex: 1 0 auto;
 }
 
-button {
-    margin-bottom: 5px;
+.btn {
+    margin-bottom: 10px;
 }
 
 .main-content {

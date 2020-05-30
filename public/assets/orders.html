@@ -27,7 +27,7 @@
             <h1>Orders</h1>
 
             <div class='all-orders'>
-                <table class='all-orders-table responsive-table highlight'>
+                <table class='all-orders-table highlight'>
                     <thead class="yellow">
                         <tr>
                             <th>ID</th>
@@ -44,17 +44,6 @@
                     var all_orders = getOrders();
                     createOrdersPage(all_orders);
                 </script>
-                <!--
-                <script>
-                    var all_orders = getOrders();
-                    all_orders = JSON.parse(all_orders);
-                    let table = document.querySelector("table");
-                    let data = Object.keys(all_orders["orders"][all_orders["count"]-1]);    //using last document keys to create the head because the last one is in the newest format
-                    generateTableHead(table, data);
-                    generateTable(table, all_orders["orders"]);
-                </script>
-                -->
-                
 
             </div>
         </div>
