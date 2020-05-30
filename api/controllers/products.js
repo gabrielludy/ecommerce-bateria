@@ -17,7 +17,7 @@ exports.products_get_all = (req, res, next) => {
                     price: doc.price,
                     _id: doc._id,
                     productImage: doc.productImage,
-                    link: 'https://loja-bateria.herokuapp.com/products/' + doc._id
+                    link: 'https://loja-bateria.herokuapp.com/product/' + doc._id
                 }
             })
         };

@@ -6,7 +6,7 @@
         <title>Ecommerce Bateria - Home</title>
         <link rel="stylesheet" type="text/css" href="public/css/style.css">
         <script type="text/javascript" src="public/js/methods.js"></script>
-
+        
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -25,10 +25,37 @@
         </div>
 
         <div class="main-content">
-            <div class="page-title">
-                <h1>Home</h1>
+            <div class="row page-title">
+                <h1 class="s12">Loja Bateria</h1>
             </div>
-            <div class="table-content"></div>
+            <div class="s12 home-content">
+                <div class="carousel carousel-slider center">
+                    <div class="carousel-item amber white-text" href="#one!">
+                      <h2>Solo Podre</h2>
+                      <p class="white-text">Solo trolado nunca usado. Perfeito pra quem quer alcançar posições medianas em torneios. Aproveite a oferta!</p>
+                      <img src="/uploads/2020-05-30T20:33:36.221ZSeleção_088.png">
+                    </div>
+                    <div class="carousel-item red white-text" href="#two!">
+                      <h2>Equalizador</h2>
+                      <p class="white-text">Breque sucesso de crítica e público. Confira no nosso catálogo.</p>
+                      <a href="#three!"><img src="uploads/2020-05-30T20:35:38.112ZSeleção_091.png"></a>
+                    </div>
+                    <div class="carousel-item green white-text" href="#three!">
+                      <h2>Solo de caixa perfeito</h2>
+                      <p class="white-text">Anos de experiência os levaram a esse solo perfeito de caixa (algo nunca antes visto na história). Aproveite as ofertas!</p>
+                      <a href="#three!"><img src="uploads/2020-05-30T20:36:08.620ZSeleção_090.png"></a>
+                    </div>
+                  </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var elems = document.querySelectorAll('.carousel');
+                    var instances = M.Carousel.init(elems, {
+                        fullWidth: true,
+                        indicators: true
+                    });
+                });
+            </script>
         </div>
         
         <footer class="page-footer indigo accent-3">

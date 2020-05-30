@@ -11,7 +11,7 @@ const ProductsController = require('../controllers/products');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, './uploads/');3
+        cb(null, './uploads/');
     },
     filename: function(req, file, cb){
         cb(null, new Date().toISOString() + file.originalname);
@@ -27,9 +27,13 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const upload = multer ({storage: storage, limits: {
-    fileSize: 1024 * 1024 * 5 //5mb
-}});
+const upload = multer ({
+    storage: storage, 
+    limits: {
+        fileSize: 1024 * 1024 * 55 //5mb
+    },
+    fileFilter: fileFilter
+});
 
 
 // Handle incoming requests 

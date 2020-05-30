@@ -19,7 +19,7 @@ Your login session expires in 1 hour.
 - Login and Signup page: https://loja-bateria.herokuapp.com/user
 #### Product
 - All products page: https://loja-bateria.herokuapp.com/products
-- Specific product page: http://www.loja-bateria.herokuapp.com/products/:productId
+- Specific product page: http://www.loja-bateria.herokuapp.com/product/:productId
 #### Order
 To see all orders you need to login.
 - All orders page: https://loja-bateria.herokuapp.com/orders

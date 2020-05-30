@@ -21,13 +21,13 @@ mongoose.connect(
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '20mb'}));
 
 //used for avoid CORS
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization"  
+    req.header(
+        "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization"  
     );
     if(req.method === "OPTIONS") {
         res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE, GET, PATCH');
@@ -48,23 +48,23 @@ app.get('/', function(req, res) {
     console.log('GET in ' + __dirname + '/public/index.html');
     res.status(200).sendFile(__dirname + '/public/index.html');
 });
-app.get('/products/:productId', function(req, res) {
-    //var dirName = __dirname.replace('products/','');
-    res.status(200).sendFile(__dirname + '/public/assets/product.html');
-});
-app.get('/products', function(req, res) {
-    res.status(200).sendFile(__dirname + '/public/assets/products.html');
-});
-app.get('/orders', function(req, res) {
+app.use('/orders', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/orders.html');
 });
-app.get('/user', function(req, res) {
+app.use('/user', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/user.html');
 });
+app.use('/products', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/products.html');
+});
+app.use('/product/:productId', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/product.html');
+});
+
 
 //error handling
 app.use((req, res, next) => {
-    const error = new Error('Not Found! Página ainda não configurada.');
+    const error = new Error('Not Found.');
     error.status = 404;
     next(error);
 })
@@ -72,11 +72,11 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
     res.status(error.status || 500);
     res.json({
-        error: {
+       error: {
             message: error.message
         }
     });
-})
+});
 
 
 module.exports = app;
