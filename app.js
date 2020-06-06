@@ -60,6 +60,9 @@ app.use('/products', function(req, res) {
 app.use('/product/:productId', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/product.html');
 });
+app.use('/cart', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/cart.html');
+});
 
 
 //error handling

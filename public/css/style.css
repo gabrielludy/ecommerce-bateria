@@ -153,8 +153,10 @@ footer {
 }
 
 
-@media only screen and (min-width: 1000px) {
-    .carousel {
-        min-height: 1000px !important;
-    }   
+.carousel {
+    min-height: 400px;
+}   
+
+.card {
+    margin: 15px !important;
 }

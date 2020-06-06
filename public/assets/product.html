@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ecommerce Bateria - Home</title>
         <link rel="stylesheet" type="text/css" href="../public/css/style.css">
         <script type="text/javascript" src="../public/js/methods.js"></script>
         <!-- Compiled and minified CSS -->
@@ -15,12 +14,32 @@
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-M9T3ZMQ');</script>
-        <!-- End Google Tag Manager -->     
+        <!-- End Google Tag Manager --> 
         
+        <!-- Primary Meta Tags -->
+        <title>Ecommerce Bateria - Venda de Breques e acessórios</title>
+        <meta name="title" content="Ecommerce Bateria - Venda de Breques e acessórios">
+        <meta name="description" content="O melhor site de venda de breques e acessórios diferenciados. O melhor para tunar sua bateria.">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://loja-bateria.herokuapp.com/">
+        <meta property="og:title" content="Ecommerce Bateria - Venda de Breques e acessórios">
+        <meta property="og:description" content="O melhor site de venda de breques e acessórios diferenciados. O melhor para tunar sua bateria.">
+        <meta property="og:image" content="">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://loja-bateria.herokuapp.com/">
+        <meta property="twitter:title" content="Ecommerce Bateria - Venda de Breques e acessórios">
+        <meta property="twitter:description" content="O melhor site de venda de breques e acessórios diferenciados. O melhor para tunar sua bateria.">
+        <meta property="twitter:image" content="">
+        
+
     </head>
     <body>
         <div class='menu-topo'>
-            <script>loadMenuTopo();</script>
+            <script>loadMenuTopo();showLoginMenu();</script>
         </div>
 
         <script>
@@ -33,11 +52,11 @@
         </script>
 
         <div class="row main-content">
-            <div class="page-title">
+            <div class="page-title s12">
                 <h1>Product Page</h1>
             </div>
             <div class="product-content">
-                <div class="row card blue accent-1" style="padding:10px">
+                <div class="row card indigo ancient-1" style="padding:10px">
                     <div class="col s12 l8">
                         <div class="col s12 l6 product-page-image card-image">
                             <script>
@@ -79,15 +98,27 @@
                                 </script>
                             </div>
                             <div class="col s12 l12 product-page-price">
-                                <a class="waves-effect blue btn" onclick="pushDatalayerPurchase(productInfo)">Comprar</a>
+                                <a class="waves-effect blue btn" onclick="addToCart(productInfo)">Adicionar ao Carrinho</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <a href="/products" class="yellow">Back to all products</a>
+            <a href="/products" class="waves-effect indigo darken-4 btn" style="margin: 15px;">Back to all products</a>
         </div>
         
+
+        <!-- Modal Structure -->
+        <div id="modal-add-to-cart" class="modal">
+            <div class="modal-content">
+            <h4>Added to cart</h4>
+            <p>Product successfully added to cart.</p>
+            </div>
+            <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+            </div>
+        </div>
+
         <footer class="page-footer indigo accent-3">
             <script>loadFooter();</script>
         </footer>

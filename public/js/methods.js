@@ -7,8 +7,6 @@ function loadFile(fileName){
     if(fileName.indexOf('menu.html') == 0){
         var fileUrl = '/public/assets/menu.html';
     }
-
-    //pages that can be loaded
     if(fileName.indexOf('footer.html') == 0){
         var fileUrl = '/public/assets/footer.html';
     }
@@ -29,6 +27,35 @@ function loadMenuTopo(){
     var divMenuTopo = document.querySelector('.menu-topo');
     menu = menu.replace(/(\r\n|\n|\r|\t)/gm, "");  //remove break lines and tabs
     divMenuTopo.insertAdjacentHTML('afterbegin', menu); 
+}
+
+function showLoginMenu() {
+
+    function addListenerOrRunFunction(){
+        var logarButton = window.document.querySelectorAll('.menu-login > a')[0];
+        var deslogarButton = window.document.querySelectorAll('.menu-login > a')[1];
+    
+        if(getCookieValue('jwtoken')){
+            logarButton.style.display = "none";
+            
+            //push userid in datalayer
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'userId',
+                userId: ''
+            });
+
+        } else {
+            deslogarButton.style.display = "none";
+        }
+    }
+    
+
+    if(window.document.readyState === "complete"){
+        addListenerOrRunFunction();
+    } else {
+        window.document.addEventListener('DOMContentLoaded', addListenerOrRunFunction());
+    }
 }
 
 function loadFooter(){
@@ -59,8 +86,8 @@ function createLoginUserToken(responseWithToken){
     }
 }
 
-function getTokenCookieValue(){
-    var c_name = 'jwtoken'; //cookie name
+function getCookieValue(cookieName){
+    var c_name = cookieName; //cookie name
     if (document.cookie.length > 0) {
         c_start = document.cookie.indexOf(c_name + "=");
         if (c_start != -1) {
@@ -102,13 +129,13 @@ function sendLoginForm(){
             createLoginUserToken(responseWithToken);
 
             instance.options.onCloseEnd = function(){
-                location.reload();
+                window.location.replace('/');
             };
             instance.open();
         }
         if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
             console.log('cant open modal');
-            location.reload();
+            window.location.reload();
         }
     };
     xhr.send(JSON.stringify(loginParams));
@@ -155,7 +182,7 @@ function generateTableHead(table, data) {
 
 function getOrders(){
     var response;
-    var tokenCookieValue = getTokenCookieValue();
+    var tokenCookieValue = getCookieValue('jwtoken');
 
     var xhr = new window.XMLHttpRequest();
     xhr.open('GET', '/api/orders', false);
@@ -213,7 +240,7 @@ function createProductsPage(data){
                 
                 try{
                     var imageLink = document.createElement('a');
-                    imageLink.setAttribute('href', prod.link);
+                    imageLink.setAttribute('href', '/product/'+prod.link.split('/')[prod.link.split('/').length-1]);
 
                     let image = new Image();
                     image.src = '/' + prod.productImage;
@@ -231,7 +258,7 @@ function createProductsPage(data){
             if(item.indexOf("name") >= 0){
                 try{
                     var nameLink = document.createElement('a');
-                    nameLink.setAttribute('href',prod.link);
+                    nameLink.setAttribute('href', '/product/'+prod.link.split('/')[prod.link.split('/').length-1]);
                     nameLink.setAttribute('onclick','pushDatalayerProductClick()');
                     nameLink.innerHTML = prod.name;
 
@@ -362,11 +389,267 @@ function getXmlDoc(myurl, cb){
     xhr.send();
 }
 
-function pushDatalayerPurchase(){
+
+function pushDatalayerProductClick(){
     var datalayer = window.dataLayer || [];
 
     datalayer.push({
-        event: 'click-purchase',
+        event: 'click-product-click',
         productInfo: productInfo
     });
 }
+
+function pushDatalayerAddToCart(){
+    var datalayer = window.dataLayer || [];
+
+    datalayer.push({
+        event: 'click-add-to-cart'
+    });
+}
+
+
+function addToCart(productInfo){
+    var cartProducts = docCookies.getItem('cartProducts');
+    let expires = 30*24*60*60;//30 dias
+    let path = '/';
+
+    if(cartProducts == null){
+        //crio o cookie com produto e quantidade
+        docCookies.setItem('cartProducts', JSON.stringify( {_id: productInfo._id, quantity: 1}) + '|', expires, path );
+    } else {
+        //verify if product is already on cart
+        if (cartProducts.indexOf(productInfo._id) >= 0){
+            //modify quantity
+            let cartProds = cartProducts.split('|'); 
+            for (i = 0; i <  cartProds.length-1; i++ ) {
+                let prod = JSON.parse(cartProds[i]);
+                //search item to change the quantity
+                if(prod["_id"].indexOf(productInfo._id) >= 0){
+                    prod["quantity"] += 1;
+                }
+
+                //replace product
+                cartProds[i] = prod;
+            }
+
+            //replace cookie value
+            let newCookieContent = '';
+            for (let i = 0; i < cartProds.length-1; i++) {
+                newCookieContent += JSON.stringify(cartProds[i])  + '|';
+            }
+            docCookies.setItem('cartProducts', newCookieContent, expires, path);
+
+        } else {
+            //append
+            docCookies.setItem('cartProducts', cartProducts + JSON.stringify( {_id: productInfo._id, quantity: 1} ) + '|', expires, path)
+        }
+
+
+    }
+
+    var instance = M.Modal.init(document.querySelector('#modal-add-to-cart'));   //use modal
+
+    instance.options.onCloseEnd = function(){
+        //window.location.replace('/');
+    };
+    instance.open();
+
+    pushDatalayerAddToCart();
+}
+
+function getCartProducts () {
+    let cartProducts = docCookies.getItem('cartProducts');
+    let prodsToShow = [];
+    var response;
+    var xhr = new window.XMLHttpRequest();
+
+
+    if(cartProducts == null){
+        window.alert('Carrinho vazio');
+    } else {
+        let cartProds = cartProducts.split('|'); 
+        for (i = 0; i <  cartProds.length-1; i++ ) {
+            let prod = JSON.parse(cartProds[i]);
+
+            xhr.open('GET', '/api/products/' + prod["_id"], false);
+                            
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
+                    response = xhr.responseText;
+                } 
+                else if(xhr.readyState === 4 && xhr.status === 401) {    //readystate === 4 (done){
+                    console.log("Erro ao carregar produtos do carrinho");
+                } 
+            };
+            xhr.send();
+            
+            let prodWithQuantity = JSON.parse(response);
+            prodWithQuantity["quantity"] = prod["quantity"];
+            prodsToShow.push(prodWithQuantity);
+        }
+    }
+
+    return prodsToShow;
+}
+
+function createCartPage(data){
+    //generate table body
+    function createProductDiv(prod){
+        
+        let productDiv = document.createElement('tr');
+        productDiv.setAttribute('class', "product-div");
+        let thisDiv;
+
+        Object.keys(prod).forEach((item)=>{
+            if(item.indexOf('_id') >=0) return;     //dont show id
+
+            thisDiv = document.createElement('td');
+
+            //show image
+            if(item.indexOf("productImage") >= 0){
+                
+                try{
+                    var imageLink = document.createElement('a');
+                    
+                    let image = new Image();
+                    image.src = '/' + prod.productImage;
+                    image.height = 100;
+                    image.width = 100;
+
+                    imageLink.appendChild(image);
+                    thisDiv.appendChild(imageLink);
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show name (with link)
+            if(item.indexOf("name") >= 0){
+                try{
+                    var nameLink = document.createElement('a');
+                    nameLink.setAttribute('onclick','pushDatalayerProductClick()');
+                    nameLink.innerHTML = prod.name;
+
+                    thisDiv.appendChild(nameLink);
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show price
+            if(item.indexOf("price") >= 0){
+                try{
+                    thisDiv.innerHTML = prod.price;
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //show quantity
+            if(item.indexOf("quantity") >= 0){
+                try{
+                    thisDiv.innerHTML = prod.quantity;
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
+            //setting class name
+            thisDiv.setAttribute('class', item);
+            
+            //adding node to page
+            productDiv.appendChild(thisDiv);
+        });
+        return productDiv;
+    }
+
+    var products = data;
+
+    var productsDiv = document.querySelector('.all-products-table > tbody');
+    
+    products.forEach(element => {
+        let node = createProductDiv(element);
+        productsDiv.appendChild(node);
+    });
+}
+
+function calculateTotalPrice(){
+    let products = window.all_cart_products;
+    var totalPrice = products.reduce((total, item) => {
+        return total += item.price * item.quantity;
+    },0);
+
+    totalPrice = totalPrice.toFixed(2);
+    var divTotalPrice = document.querySelector('.total-price');
+    divTotalPrice.innerHTML = totalPrice;
+}
+
+function clearCart() {
+    docCookies.removeItem('cartProducts');
+    window.location.replace('/');
+}
+
+/*\
+|*|
+|*|  :: cookies.js ::
+|*|
+|*|  A complete cookies reader/writer framework with full unicode support.
+|*|
+|*|  Revision #1 - September 4, 2014
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
+|*|  https://developer.mozilla.org/User:fusionchess
+|*|  https://github.com/madmurphy/cookies.js
+|*|
+|*|  This framework is released under the GNU Public License, version 3 or later.
+|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
+|*|
+|*|  Syntaxes:
+|*|
+|*|  * docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+|*|  * docCookies.getItem(name)
+|*|  * docCookies.removeItem(name[, path[, domain]])
+|*|  * docCookies.hasItem(name)
+|*|  * docCookies.keys()
+|*|
+\*/
+
+var docCookies = {
+    getItem: function (sKey) {
+      if (!sKey) { return null; }
+      return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+    },
+    setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+      if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+      var sExpires = "";
+      if (vEnd) {
+        switch (vEnd.constructor) {
+          case Number:
+            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+            break;
+          case String:
+            sExpires = "; expires=" + vEnd;
+            break;
+          case Date:
+            sExpires = "; expires=" + vEnd.toUTCString();
+            break;
+        }
+      }
+      document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+      return true;
+    },
+    removeItem: function (sKey, sPath, sDomain) {
+      if (!this.hasItem(sKey)) { return false; }
+      document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+      return true;
+    },
+    hasItem: function (sKey) {
+      if (!sKey) { return false; }
+      return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+    },
+    keys: function () {
+      var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+      for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
+      return aKeys;
+    }
+  };

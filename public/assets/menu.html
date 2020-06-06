@@ -5,7 +5,8 @@
         <div class="menu-geral">        
             <a href="/">Home</a>        
             <a href="/products">Products</a>        
-            <a href="/orders">Orders</a>    
+            <a href="/orders">Orders</a>
+            <a href="/cart">Cart</a>    
         </div>    
         <div class="menu-login">
             <a href="/user">Logar</a>        
@@ -13,3 +14,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function showLoginMenu() {
+        var logarButton = window.document.querySelectorAll('.menu-login > a')[0];
+        var deslogarButton = window.document.querySelectorAll('.menu-login > a')[1];
+
+        if(getTokenCookieValue()){
+            logarButton.style.display = "none";
+        } else {
+            deslogarButton.style.display = "none";
+        }
+    } 
+
+    if(window.document.readyState === "complete"){
+        showLoginMenu();
+    } else {
+        window.document.addEventListener('DOMContentLoaded', showLoginMenu());
+    }
+</script>

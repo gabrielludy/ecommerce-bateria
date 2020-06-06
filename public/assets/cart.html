@@ -3,9 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="public/css/style.css">
-        <script type="text/javascript" src="public/js/methods.js"></script>
-        
+        <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+        <script type="text/javascript" src="../public/js/methods.js"></script>
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -15,8 +14,8 @@
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-M9T3ZMQ');</script>
-        <!-- End Google Tag Manager -->     
-
+        <!-- End Google Tag Manager --> 
+        
         <!-- Primary Meta Tags -->
         <title>Ecommerce Bateria - Venda de Breques e acessórios</title>
         <meta name="title" content="Ecommerce Bateria - Venda de Breques e acessórios">
@@ -35,8 +34,8 @@
         <meta property="twitter:title" content="Ecommerce Bateria - Venda de Breques e acessórios">
         <meta property="twitter:description" content="O melhor site de venda de breques e acessórios diferenciados. O melhor para tunar sua bateria.">
         <meta property="twitter:image" content="">
-
         
+
     </head>
     <body>
         <div class='menu-topo'>
@@ -44,39 +43,35 @@
         </div>
 
         <div class="row main-content">
-            <div class="page-title">
-                <h1 class="s12">Loja Bateria</h1>
+            <div class="page-title s12">
+                <h1>Cart</h1>
             </div>
-            <div class="s8 home-content">
-                <div class="carousel carousel-slider center">
-                    <div class="carousel-item amber white-text" href="#one!">
-                      <h2>Solo Podre</h2>
-                      <p class="white-text">Solo trolado nunca usado. Perfeito pra quem quer alcançar posições medianas em torneios. Aproveite a oferta!</p>
-                      <img src="/uploads/2020-05-30T20:33:36.221ZSeleção_088.png">
-                    </div>
-                    <div class="carousel-item red white-text" href="#two!">
-                      <h2>Equalizador</h2>
-                      <p class="white-text">Breque sucesso de crítica e público. Confira no nosso catálogo.</p>
-                      <img src="uploads/2020-05-30T20:35:38.112ZSeleção_091.png">
-                    </div>
-                    <div class="carousel-item green white-text" href="#three!">
-                      <h2>Solo de caixa perfeito</h2>
-                      <p class="white-text">Anos de experiência os levaram a esse solo perfeito de caixa (algo nunca antes visto na história). Aproveite as ofertas!</p>
-                      <img src="uploads/2020-05-30T20:36:08.620ZSeleção_090.png">
-                    </div>
-                  </div>
-            </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var elems = document.querySelectorAll('.carousel');
-                    var instances = M.Carousel.init(elems, {
-                        fullWidth: true,
-                        indicators: true
-                    });
-                });
-            </script>
+            <div class="cart-content">
+                <table class='all-products-table highlight'>
+                    <thead class="yellow">
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <script>
+                        var all_cart_products = getCartProducts();
+                        createCartPage(all_cart_products);
+                    </script>
+                </table>
+
+                <h4 class="total-price "> 
+                    <script>calculateTotalPrice();</script>
+                </h4>
+
+                <a class="s6 waves-effect red lighten-2 btn" style="margin: 15px;" onclick="clearCart()">Clear Cart</a>
+                <a class="s12 waves-effect green darken-3 btn" style="margin: 15px;">Purchase</a>
+            </div>  
         </div>
-        
+
         <footer class="page-footer indigo accent-3">
             <script>loadFooter();</script>
         </footer>
