@@ -657,11 +657,11 @@ function purchaseActionInCheckout () {
         function setPaymentOption(opt) {
             if(opt == 1) return 'Troca de breques';
             if(opt == 2) return 'Instrumento usado';
-            if(opt == 2) return 'Cortesia em role de BU';
+            if(opt == 3) return 'Cortesia em role de BU';
         }
         function setShippingOption(opt) {
             if(opt == 1) return '90bpm';
-            if(opt == 2) return '140bpm';
+            if(opt == 2) return '130bpm';
             if(opt == 3) return '150bpm';
         }
 
