@@ -152,9 +152,15 @@ function sendSignupForm(){
     var xhr = new window.XMLHttpRequest();
     xhr.open('POST', '/api/users/signup', true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === 4 && xhr.status === 201) {    //readystate === 4 (done)
+            alert("Successfull signup");
+        }
+        if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
+            alert('error on signup');
+        }
+    };
     xhr.send(JSON.stringify(signUpParams));
-
-    alert("Successfull signup");
 }
 
 
