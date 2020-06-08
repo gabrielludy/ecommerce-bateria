@@ -63,6 +63,12 @@ app.use('/product/:productId', function(req, res) {
 app.use('/cart', function(req, res) {
     res.status(200).sendFile(__dirname + '/public/assets/cart.html');
 });
+app.use('/checkout', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/checkout.html');
+});
+app.use('/thankyou', function(req, res) {
+    res.status(200).sendFile(__dirname + '/public/assets/thankyou.html');
+});
 
 
 //error handling

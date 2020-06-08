@@ -160,3 +160,7 @@ footer {
 .card {
     margin: 15px !important;
 }
+
+.checkout-cart-content {
+    margin: 30px;
+}

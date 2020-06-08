@@ -44,9 +44,10 @@
 
         <div class="row main-content">
             <div class="page-title s12">
-                <h1>Cart</h1>
+                <h1>Checkout</h1>
+                <h4>Your cart products:</h4>
             </div>
-            <div class="cart-content">
+            <div class="checkout-cart-content">
                 <table class='all-products-table highlight'>
                     <thead class="yellow">
                         <tr>
@@ -63,26 +64,54 @@
                     </script>
                 </table>
 
-                <h4 class="total-price"> 
+                <h5 class="total-price"> 
                     <script>calculateTotalPrice();</script>
-                </h4>
-
-                <a class="s6 waves-effect red lighten-2 btn" style="margin: 15px;" onclick="clearCart()">Clear Cart</a>
-                <a class="s12 waves-effect green darken-3 btn" style="margin: 15px;" onclick="purchaseActionInCart()">Purchase</a>
+                </h5>
             </div>  
+
+            <divc class="checkout-content">
+                <h4>Checkout Options</h4>
+                <div class="payment-option">
+                    <script>loadCheckoutOptions();</script>
+                    <div class="input-field col s12">
+                        <select>
+                          <option value="" disabled selected>Choose your payment option</option>
+                            <option value="1">Troca de breques</option>
+                            <option value="2">Instrumento usado</option>
+                            <option value="3">Cortesia em rolê de BU</option>
+                        </select>
+                        <label>Payment option</label>
+                      </div>
+                </div>
+                <div class="shipping-option">
+                    <div class="input-field col s12">
+                        <select>
+                            <option value="" disabled selected>Choose your shipping option</option>
+                            <option value="1">90bpm</option>
+                            <option value="2">130bpm</option>
+                            <option value="3">150bpm</option>
+                        </select>
+                        <label>Shipping option</label>
+                    </div>
+                </div>     
+                
+                <a class="s12 waves-effect green darken-3 btn" style="margin: 15px;" onclick="purchaseActionInCheckout()">Confirm Purchase</a>
+
+            </div>
         </div>
 
         <!-- Modal Structure -->
         <div id="modal-purchase-fail" class="modal">
             <div class="modal-content">
-            <h4>Purchase Fail</h4>
-            <p>Login to confirm your purchase.</p>
+            <h4>Purchase Failed</h4>
+            <p>Select the checkout options.</p>
             </div>
             <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
             </div>
         </div>
-        
+
+
         <footer class="page-footer indigo accent-3">
             <script>loadFooter();</script>
         </footer>

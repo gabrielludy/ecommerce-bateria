@@ -340,6 +340,15 @@ function createOrdersPage(data){
                 };
             }
 
+            //show shipping
+            if(item.indexOf("shipping") >= 0){
+                try{
+                    thisDiv.innerHTML = ord.shipping;
+                } catch {
+                    err => {console.log(err)}
+                };
+            }
+
             //show price
             if(item.indexOf("totalPrice") >= 0){
                 try{
@@ -394,8 +403,7 @@ function pushDatalayerProductClick(){
     var datalayer = window.dataLayer || [];
 
     datalayer.push({
-        event: 'click-product-click',
-        productInfo: productInfo
+        event: 'click-product-click'
     });
 }
 
@@ -465,7 +473,7 @@ function getCartProducts () {
 
 
     if(cartProducts == null){
-        window.alert('Carrinho vazio');
+        window.alert('Empty cart');
     } else {
         let cartProds = cartProducts.split('|'); 
         for (i = 0; i <  cartProds.length-1; i++ ) {
@@ -586,7 +594,121 @@ function calculateTotalPrice(){
 
 function clearCart() {
     docCookies.removeItem('cartProducts');
-    window.location.replace('/');
+    //window.location.replace('/');
+}
+
+function purchaseActionInCart() {
+    if(getCookieValue('jwtoken')){
+        window.location.replace('/checkout');
+    } else {
+        var instance = M.Modal.init(document.querySelector('#modal-purchase-fail'));   //use modal
+        instance.options.onCloseEnd = function(){
+            window.location.replace('/user');
+        };
+        instance.open();
+    }
+}
+
+function loadCheckoutOptions() {
+    function loadCheck() {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    };
+
+    if(window.document.readyState === "complete"){
+        loadCheck();
+    } else {
+        document.addEventListener('DOMContentLoaded', loadCheck);
+    }
+}
+
+function purchaseActionInCheckout () {
+    var elems = document.querySelectorAll('select');
+
+    if(elems[0].value === "" || elems[1].value === ""){
+        var instance = M.Modal.init(document.querySelector('#modal-purchase-fail'));   //use modal
+        instance.open();
+    } 
+    else {
+        var finalOrder = {
+            order: {
+                "payment": "",
+                "shipping": "",
+                "products": {} 
+            }
+        };
+        
+        function productsInCorrectFormat() {
+            let products = window.all_cart_products;
+            let obj = "{"
+            products.forEach(elem=>{
+                obj += '"' +elem._id+'"' + ':{';
+                obj += '"_id": "' + elem._id + '",';
+                obj += '"quantity":' + elem.quantity;
+                obj += '},';
+            });
+            obj = obj.slice(0, obj.length - 1);
+            obj += '}';
+
+            obj = JSON.parse(obj);
+            return obj;
+        }
+
+        function setPaymentOption(opt) {
+            if(opt == 1) return 'Troca de breques';
+            if(opt == 2) return 'Instrumento usado';
+            if(opt == 2) return 'Cortesia em role de BU';
+        }
+        function setShippingOption(opt) {
+            if(opt == 1) return '90bpm';
+            if(opt == 2) return '140bpm';
+            if(opt == 3) return '150bpm';
+        }
+
+        //execute purchase and go to thank you page
+        const paymentOption = setPaymentOption(elems[0].value);
+        const shippmentOption = setShippingOption(elems[1].value);
+        const products = productsInCorrectFormat();
+        var responseWithToken = "";
+
+        finalOrder.order.payment = paymentOption;
+        finalOrder.order.shipping = shippmentOption;
+        finalOrder.order.products = products;
+
+        console.log(finalOrder);
+    
+        //request to create order
+        var tokenCookieValue = getCookieValue('jwtoken');
+        var xhr = new window.XMLHttpRequest();
+        xhr.open('POST', '/api/orders', false);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + tokenCookieValue);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
+                let response = xhr.responseText;
+                console.log("order created");
+                console.log(response);
+                clearCart();
+                
+                pushDatalayerPurchase(response);
+
+                setTimeout(function(){
+                    window.location.replace('/thankyou');
+                }, 1500);
+            }
+            if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
+                console.log('purchase failed');
+            }
+        };
+        xhr.send(JSON.stringify(finalOrder));
+    }
+}
+
+function pushDatalayerPurchase (data) {
+    window.dataLayer.push({
+        event: 'purchase',
+        order: JSON.parse(data)
+    });
 }
 
 /*\

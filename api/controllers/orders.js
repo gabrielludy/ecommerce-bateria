@@ -19,7 +19,7 @@ exports.orders_delete_all = (req, res, next) => {
 
 exports.orders_get_all = (req, res, next) => {
     Order.find()
-    .select('_id products payment totalPrice user')   //comando para mostrar apenas esses campos 
+    .select('_id products payment shipping totalPrice user')   //comando para mostrar apenas esses campos 
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -29,6 +29,7 @@ exports.orders_get_all = (req, res, next) => {
                     _id: doc._id,
                     products: doc.products,
                     payment: doc.payment,
+                    shipping: doc.shipping,
                     totalPrice: doc.totalPrice,
                     user: doc.user
                 }
@@ -111,12 +112,14 @@ exports.orders_create_order = async (req, res, next) => {
         Object.keys(products).forEach(function(productId) {
             totalPrice += products[productId]["price"];
         });
+        totalPrice = totalPrice.toFixed(2);
 
         //creating order and saving
         const order = new Order({
             _id: new mongoose.Types.ObjectId(), //string
             products: products,                 //[]
-            payment: req.body.payment,           //sting
+            payment: req.body.order.payment,           //sting
+            shipping: req.body.order.shipping,
             totalPrice: totalPrice,
             user: userInformation
         });
