@@ -43,6 +43,34 @@ exports.orders_get_all = (req, res, next) => {
     });
 }
 
+exports.orders_my_orders = (req, res, next) => {
+    console.log(req.userData.email);
+    Order.find({"user.email": req.userData.email})
+    .select('_id products payment shipping totalPrice user')   //comando para mostrar apenas esses campos 
+    .exec()
+    .then(docs => {
+        res.status(200).json({
+            message: "consulted all "+ req.userData.email +" orders",
+            count: docs.length,
+            orders: docs.map(doc => {
+                return  {
+                    _id: doc._id,
+                    products: doc.products,
+                    payment: doc.payment,
+                    shipping: doc.shipping,
+                    totalPrice: doc.totalPrice,
+                    user: doc.user
+                }
+            })
+        });
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: err
+        });
+    });
+}
+
 exports.orders_get_order = (req, res, next) => {
     Order.findById(req.params.orderId)
     .exec()
@@ -54,11 +82,7 @@ exports.orders_get_order = (req, res, next) => {
         }
 
         res.status(200).json({
-            order: order,
-            resquest: {
-                type: 'GET',
-                url: 'http://localhost:3000/orders'
-            }
+            order: order
         });
     })
     .catch(err => {
@@ -114,12 +138,34 @@ exports.orders_create_order = async (req, res, next) => {
         });
         totalPrice = totalPrice.toFixed(2);
 
+        //setting payment and shipping
+        function setPaymentOption(opt) {
+            if(opt == 1) { return 'Troca de breques'}
+            else if(opt == 2) { return 'Instrumento usado'}
+            else if(opt == 3) { return 'Cortesia em role de BU'}
+            else {
+                return res.status(500).json({
+                    error: err
+                });
+            }
+        }
+        function setShippingOption(opt) {
+            if(opt == 1) { return '90bpm' }
+            else if(opt == 2) { return '130bpm' }
+            else if(opt == 3) { return '150bpm' }
+            else {
+                return res.status(500).json({
+                    error: err
+                });
+            }
+        }
+
         //creating order and saving
         const order = new Order({
             _id: new mongoose.Types.ObjectId(), //string
             products: products,                 //[]
-            payment: req.body.order.payment,           //sting
-            shipping: req.body.order.shipping,
+            payment: setPaymentOption(req.body.order.payment),           //sting
+            shipping: setShippingOption(req.body.order.shipping),
             totalPrice: totalPrice,
             user: userInformation
         });

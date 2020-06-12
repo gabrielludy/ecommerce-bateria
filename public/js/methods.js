@@ -154,10 +154,15 @@ function sendSignupForm(){
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.onreadystatechange = function () {
         if(xhr.readyState === 4 && xhr.status === 201) {    //readystate === 4 (done)
-            alert("Successfull signup");
+            var instance = M.Modal.init(document.querySelector('#modal-signup-successful'));   //use modal
+            instance.options.onCloseEnd = function(){
+                window.location.replace('/');
+            };
+            instance.open();        
         }
-        if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
-            alert('error on signup');
+        if(xhr.readyState === 4 && xhr.status !== 201) {    //readystate === 4 (done)
+            var instance = M.Modal.init(document.querySelector('#modal-signup-failed'));   //use modal
+            instance.open();        
         }
     };
     xhr.send(JSON.stringify(signUpParams));
@@ -189,6 +194,7 @@ function generateTableHead(table, data) {
 function getOrders(){
     var response;
     var tokenCookieValue = getCookieValue('jwtoken');
+    var route = '';
 
     var xhr = new window.XMLHttpRequest();
     xhr.open('GET', '/api/orders', false);
@@ -266,7 +272,7 @@ function createProductsPage(data){
                     var nameLink = document.createElement('a');
                     nameLink.setAttribute('href', '/product/'+prod.link.split('/')[prod.link.split('/').length-1]);
                     nameLink.setAttribute('onclick','pushDatalayerProductClick()');
-                    nameLink.innerHTML = prod.name;
+                    nameLink.innerText = prod.name;
 
                     thisDiv.appendChild(nameLink);
                 } catch {
@@ -277,7 +283,7 @@ function createProductsPage(data){
             //show price
             if(item.indexOf("price") >= 0){
                 try{
-                    thisDiv.innerHTML = prod.price;
+                    thisDiv.innerText = prod.price;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -316,7 +322,7 @@ function createOrdersPage(data){
             //show _id
             if(item.indexOf("_id") >= 0){
                 try{
-                    thisDiv.innerHTML = ord["_id"];
+                    thisDiv.innerText = ord["_id"];
                 } catch {
                     err => {console.log(err)}
                 };
@@ -329,8 +335,8 @@ function createOrdersPage(data){
 
                 try{
                     productsIds.forEach(id => {
-                        let str = "<br>" + prods[id]["name"]
-                        thisDiv.innerHTML +=  str;
+                        let str = prods[id]["name"] + ', ';
+                        thisDiv.innerText +=  str;
                     });
                 } catch {
                     err => {console.log(err)}
@@ -340,7 +346,7 @@ function createOrdersPage(data){
             //show payment
             if(item.indexOf("payment") >= 0){
                 try{
-                    thisDiv.innerHTML = ord.payment;
+                    thisDiv.innerText = ord.payment;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -349,7 +355,7 @@ function createOrdersPage(data){
             //show shipping
             if(item.indexOf("shipping") >= 0){
                 try{
-                    thisDiv.innerHTML = ord.shipping;
+                    thisDiv.innerText = ord.shipping;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -358,7 +364,7 @@ function createOrdersPage(data){
             //show price
             if(item.indexOf("totalPrice") >= 0){
                 try{
-                    thisDiv.innerHTML = ord.totalPrice;
+                    thisDiv.innerText = ord.totalPrice;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -367,7 +373,7 @@ function createOrdersPage(data){
             //show user
             if(item.indexOf("user") >= 0){
                 try{
-                    thisDiv.innerHTML = ord.user["email"];
+                    thisDiv.innerText = ord.user["email"];
                 } catch {
                     err => {console.log(err)}
                 };
@@ -542,7 +548,7 @@ function createCartPage(data){
                 try{
                     var nameLink = document.createElement('a');
                     nameLink.setAttribute('onclick','pushDatalayerProductClick()');
-                    nameLink.innerHTML = prod.name;
+                    nameLink.innerText = prod.name;
 
                     thisDiv.appendChild(nameLink);
                 } catch {
@@ -553,7 +559,7 @@ function createCartPage(data){
             //show price
             if(item.indexOf("price") >= 0){
                 try{
-                    thisDiv.innerHTML = prod.price;
+                    thisDiv.innerText = prod.price;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -562,7 +568,7 @@ function createCartPage(data){
             //show quantity
             if(item.indexOf("quantity") >= 0){
                 try{
-                    thisDiv.innerHTML = prod.quantity;
+                    thisDiv.innerText = prod.quantity;
                 } catch {
                     err => {console.log(err)}
                 };
@@ -660,22 +666,10 @@ function purchaseActionInCheckout () {
             return obj;
         }
 
-        function setPaymentOption(opt) {
-            if(opt == 1) return 'Troca de breques';
-            if(opt == 2) return 'Instrumento usado';
-            if(opt == 3) return 'Cortesia em role de BU';
-        }
-        function setShippingOption(opt) {
-            if(opt == 1) return '90bpm';
-            if(opt == 2) return '130bpm';
-            if(opt == 3) return '150bpm';
-        }
-
         //execute purchase and go to thank you page
-        const paymentOption = setPaymentOption(elems[0].value);
-        const shippmentOption = setShippingOption(elems[1].value);
+        const paymentOption = elems[0].value;
+        const shippmentOption = elems[1].value;
         const products = productsInCorrectFormat();
-        var responseWithToken = "";
 
         finalOrder.order.payment = paymentOption;
         finalOrder.order.shipping = shippmentOption;

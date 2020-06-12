@@ -164,3 +164,9 @@ footer {
 .checkout-cart-content {
     margin: 30px;
 }
+
+.user-signup-warning {
+    max-width: fit-content;
+    margin: 15px;
+    margin-left: 0px;
+}

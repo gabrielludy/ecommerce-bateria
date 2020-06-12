@@ -3,7 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 
 //import middlewares
-const checkAuth = require('../middlewares/check-auth')
+const checkAuth = require('../middlewares/check-auth');
+const checkAuthAdmin = require('../middlewares/check-auth-admin');
 
 //import controlers
 const ProductsController = require('../controllers/products');
@@ -41,10 +42,10 @@ router.get('/', ProductsController.products_get_all);
 
 router.get('/:productId', ProductsController.products_get_product);
 
-router.post('/', checkAuth, upload.single('productImage'), ProductsController.products_create_product);
+router.post('/', checkAuthAdmin, upload.single('productImage'), ProductsController.products_create_product);
 
-router.patch('/:productId', checkAuth, ProductsController.products_update_product);
+router.patch('/:productId', checkAuthAdmin, ProductsController.products_update_product);
 
-router.delete('/:productId', checkAuth, ProductsController.products_delete_product);
+router.delete('/:productId', checkAuthAdmin, ProductsController.products_delete_product);
 
 module.exports = router;
