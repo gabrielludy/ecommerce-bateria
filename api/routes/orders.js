@@ -19,9 +19,9 @@ router.get('/', checkAuth, OrdersController.orders_my_orders);
 
 router.post('/', checkAuth, OrdersController.orders_create_order);
 
-router.delete('/:orderId', checkAuthAdmin, OrdersController.orders_delete_order);
+router.delete('/delete-all', checkAuthAdmin, OrdersController.orders_delete_all);
 
-//router.delete('/delete-all', CheckAuthAdmin, OrdersController.orders_delete_all);
+router.delete('/:orderId', checkAuthAdmin, OrdersController.orders_delete_order);
 
 
 module.exports = router;

@@ -6,6 +6,9 @@
         <link rel="stylesheet" type="text/css" href="public/css/style.css"> 
         <script type="text/javascript" src="public/js/methods.js"></script>
 
+        <!-- Recaptcha -->
+        <script src="https://www.google.com/recaptcha/api.js?render=6Len4KMZAAAAAN9pTm3hhGjxdBOXLWHdvunTTlQG"></script>
+
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         
@@ -50,7 +53,7 @@
                 <div class="row">
                     <h3 class="s12">User</h3>
                     <div class="red user-signup-warning">*Attention! Don't use real your emails and passwords. Create one specific to this site.</div>
-                    <form class="col s12 m5 l3 hoverable yellow lighten-1" method="dialog"> 
+                    <form class="col s12 m5 l3 hoverable yellow lighten-1" id='login-form' method="dialog"> 
                         <h5>Login</h5>
                         <div class="input-field">
                             <label for="form-login-email" class="text-indigo darken-4">Email</label>
@@ -63,7 +66,7 @@
                         <button id="login-button-submit" class="btn waves-effect indigo accent-4" onclick="sendLoginForm()">Login</button>
                     </form>
                     <div class="col m2 l1"></div>
-                    <form class="col s12 m5 l3 hoverable yellow lighten-1" method="dialog"> 
+                    <form class="col s12 m5 l3 hoverable yellow lighten-1" id='signup-form' method="dialog"> 
                         <h5>Signup</h5>
                         <div class="input-field">
                             <label for="form-signup-email" class="text-indigo darken-4">Email</label>

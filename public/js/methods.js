@@ -149,23 +149,30 @@ function sendSignupForm(){
         password: userPassword
     }
 
-    var xhr = new window.XMLHttpRequest();
-    xhr.open('POST', '/api/users/signup', true);
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    xhr.onreadystatechange = function () {
-        if(xhr.readyState === 4 && xhr.status === 201) {    //readystate === 4 (done)
-            var instance = M.Modal.init(document.querySelector('#modal-signup-successful'));   //use modal
-            instance.options.onCloseEnd = function(){
-                window.location.replace('/');
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6Len4KMZAAAAAN9pTm3hhGjxdBOXLWHdvunTTlQG', {action: 'submit'}).then(function(token) {
+            
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('POST', '/api/users/signup', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 201) {    //readystate === 4 (done)
+                    var instance = M.Modal.init(document.querySelector('#modal-signup-successful'));   //use modal
+                    setTimeout(function(){window.location.replace('/')}, 3000)
+                    instance.options.onCloseEnd = function(){
+                        window.location.replace('/');
+                    };
+                    instance.open();        
+                }
+                if(xhr.readyState === 4 && xhr.status !== 201) {    //readystate === 4 (done)
+                    var instance = M.Modal.init(document.querySelector('#modal-signup-failed'));   //use modal
+                    instance.open();
+                }
             };
-            instance.open();        
-        }
-        if(xhr.readyState === 4 && xhr.status !== 201) {    //readystate === 4 (done)
-            var instance = M.Modal.init(document.querySelector('#modal-signup-failed'));   //use modal
-            instance.open();        
-        }
-    };
-    xhr.send(JSON.stringify(signUpParams));
+            xhr.send(JSON.stringify(signUpParams));
+
+        });
+    });
 }
 
 
@@ -611,7 +618,8 @@ function clearCart() {
 
 function purchaseActionInCart() {
     if(getCookieValue('jwtoken')){
-        window.location.replace('/checkout');
+        checkoutInitializationDataLayerPush();
+        setTimeout(function(){window.location.replace('/checkout');}, 800)
     } else {
         var instance = M.Modal.init(document.querySelector('#modal-purchase-fail'));   //use modal
         instance.options.onCloseEnd = function(){
@@ -620,6 +628,15 @@ function purchaseActionInCart() {
         instance.open();
     }
 }
+
+function checkoutInitializationDataLayerPush(){
+    var dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        event: 'checkout-initialization',
+        products: window.all_cart_products || []
+    });
+}
+
 
 function loadCheckoutOptions() {
     function loadCheck() {
@@ -686,15 +703,16 @@ function purchaseActionInCheckout () {
         xhr.onreadystatechange = function () {
             if(xhr.readyState === 4 && xhr.status === 200) {    //readystate === 4 (done)
                 let response = xhr.responseText;
-                console.log("order created");
-                console.log(response);
+
+                sessionStorage.setItem('purchase_info', JSON.stringify(response));
+                sessionStorage.setItem('purchase_products', JSON.stringify(window.all_cart_products));
+                pushDatalayerConfirmPurchase(response);
+
                 clearCart();
-                
-                pushDatalayerPurchase(response);
 
                 setTimeout(function(){
                     window.location.replace('/thankyou');
-                }, 1500);
+                }, 2000);
             }
             if(xhr.readyState === 4 && xhr.status !== 200) {    //readystate === 4 (done)
                 console.log('purchase failed');
@@ -704,11 +722,27 @@ function purchaseActionInCheckout () {
     }
 }
 
-function pushDatalayerPurchase (data) {
-    window.dataLayer.push({
-        event: 'purchase',
+function pushDatalayerConfirmPurchase (data) {
+    var dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        event: 'confirm-purchase',
         order: JSON.parse(data)
     });
+}
+
+function loadPurchasedProductsOnThankYouPage(){
+    try{
+        return JSON.parse(sessionStorage.getItem('purchase_products'));
+    } catch {
+        console.log("error in purchased products");
+    }
+}
+function loadPurchaseDataOnThankYouPage(){
+    try{
+        return JSON.parse(JSON.parse(sessionStorage.getItem('purchase_info')));
+    } catch {
+        console.log("error in purchase data");
+    }
 }
 
 /*\

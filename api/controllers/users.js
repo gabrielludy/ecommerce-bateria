@@ -5,9 +5,33 @@ const xss = require('xss')
 
 //import database models
 const User = require('../models/user');
+const { request } = require('express');
 
+function verifyBot(){
+    const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?secret='+process.env.MONGO_ATLAS_PW
+    request(verifyUrl, (err, res, body) => {
+        if(err){
+            res.status(200).json({
+                error: err
+            });
+        }
+        
+        body = JSON.parse(body);
+        if(!body.success || body.score < 0.4){
+            return res.json({'bot':true, 'score': body.score});
+        }
+
+        return res.json({'bot': false});
+    })
+}
 
 exports.users_signup = (req, res, next) => {
+    if(verifyBot == false){
+        return res.status(500).json({
+            message: 'bot detected'
+        })
+    }
+
     User.find({email: req.body.email})
         .exec()
         .then(user => {
@@ -114,4 +138,14 @@ exports.users_delete_user = (req, res, next) => {
                 error: err
             });
         });
+}
+
+exports.users_delete_all = (req, res, next) => {
+    User.deleteMany({}, function(err, result) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 }
