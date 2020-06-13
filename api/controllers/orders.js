@@ -2,6 +2,8 @@ const Order = require('../models/order.js');
 const Product = require('../models/product.js');
 const User = require('../models/user.js');
 var jwt = require('jsonwebtoken');
+var xss = require("xss");
+
 
 //import database models
 const mongoose = require('mongoose');
@@ -95,8 +97,8 @@ exports.orders_get_order = (req, res, next) => {
 exports.orders_create_order = async (req, res, next) => {
     var products = req.body.order.products; 
     var userInformation = {
-        'email': req.userData.email,
-        'userId': req.userData.userId
+        'email': xss(req.userData.email),
+        'userId': xss(req.userData.userId)
     };
     var promises = [];
 
@@ -115,7 +117,7 @@ exports.orders_create_order = async (req, res, next) => {
                         }
                         
                         products[productId]["price"] = prod["price"];  //adding price
-                        products[productId]["name"] = prod["name"];  //adding name
+                        products[productId]["name"] = xss(prod["name"]);  //adding name
                         return "product maintened and price added";
                     })
                     .catch(err => {
@@ -134,7 +136,10 @@ exports.orders_create_order = async (req, res, next) => {
         //calculate total price
         var totalPrice = 0;
         Object.keys(products).forEach(function(productId) {
-            totalPrice += products[productId]["price"];
+            //verify if is a valid price (number)
+            if(typeof(products[productId]["price"]) == "number") {
+                totalPrice += products[productId]["price"];
+            }
         });
         totalPrice = totalPrice.toFixed(2);
 
@@ -159,14 +164,13 @@ exports.orders_create_order = async (req, res, next) => {
                 });
             }
         }
-
         //creating order and saving
         const order = new Order({
             _id: new mongoose.Types.ObjectId(), //string
             products: products,                 //[]
-            payment: setPaymentOption(req.body.order.payment),           //sting
-            shipping: setShippingOption(req.body.order.shipping),
-            totalPrice: totalPrice,
+            payment: xss(setPaymentOption(req.body.order.payment)),
+            shipping: xss(setShippingOption(req.body.order.shipping)),
+            totalPrice: xss(totalPrice),
             user: userInformation
         });
         order.save();

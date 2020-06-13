@@ -335,8 +335,8 @@ function createOrdersPage(data){
 
                 try{
                     productsIds.forEach(id => {
-                        let str = prods[id]["name"] + ', ';
-                        thisDiv.innerText +=  str;
+                        let str = prods[id]["name"];
+                        thisDiv.innerHTML +=  str + '<br>';
                     });
                 } catch {
                     err => {console.log(err)}

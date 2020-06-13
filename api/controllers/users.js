@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const xss = require('xss')
 
 //import database models
 const User = require('../models/user');
@@ -28,7 +29,7 @@ exports.users_signup = (req, res, next) => {
                         //creating the document for mongodb
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
-                            email: req.body.email,
+                            email: xss(req.body.email),
                             password: hash,
                             creationTimestamp: timestamp
                         });
